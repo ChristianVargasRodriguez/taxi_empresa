@@ -1,0 +1,87 @@
+{% extends "base.html" %} 
+
+{% block title %} Solicitudes {% endblock%}
+
+{% block content %}
+<h3 class="font-weight-bold">Hola {{conductor.nombre}} {{conductor.apellido}}!!!</h3>
+<hr>
+<h3 class="font-weight-bold">Estas son las solicitudes de Taxis en el momento:</h3>
+<hr class="border border-black border-4" />
+
+<div class="row justify-content-around">
+    <!-- 2.1) Rideshare Requests -->
+    <div class="col-10 col-md-5 bg-dark text-light p-3">
+        <h3 class="text-center">Solicitudes de Viajes:</h3>
+        <hr class="bg-warning" />
+
+    {% for viaje in viajes_sin_conductor %}
+        <div class="p-2 border border-round border-light mb-4 bg-dark">
+            <table class="table table-borderless mb-0 text-white">
+                <tbody>
+                    <tr>
+                        <td class="p-0">Solicitante:</td>
+                        <td class="p-0">{{viaje.solicitante}}</td>
+                    </tr> <tr>
+                        <td class="p-0">Dirección de Inicio:</td>
+                        <td class="p-0">
+                            <a href="https://www.google.es/maps/place/{{viaje.direccion_inicio}}">{{viaje.direccion_inicio}}</a>
+                        </td>
+                    </tr> <tr>
+                        <td class="p-0">Dirección de Destino:</td>
+                        <td class="p-0">
+                            <a href="https://www.google.es/maps/place/{{viaje.direccion_destino}}">{{viaje.direccion_destino}}</a>
+                        </td>
+                    </tr> <tr>
+                        <td class="p-0">Detalles:</td>
+                        <td class="p-0">{{ viaje.detalles }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="d-flex justify-content-end">
+                <a href="/viajes/{{viaje.id}}/add_driver/{{session.conductor_id}}" class="btn btn-link p-0 mx-2"><u>Tomar Viaje!</u></a>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    <!-- 2.2) Viaje En Curso
+    <div class="col-10 col-md-5 bg-dark text-light p-3">
+        <h3 class="text-center">Viaje En Curso</h3>
+        <hr class="bg-warning" />
+
+    {% for viaje in viajes_con_conductor %}
+        <div class="p-2 border border-round border-light mb-4 bg-dark">
+            <table class="table table-borderless mb-0 text-white">
+                <tbody>
+                    <tr>
+                        <td class="p-0">Solicitante:</td>
+                        <td class="p-0">{{viaje.solicitante}}</td>
+                    </tr> <tr>
+                        <td class="p-0">Recojer en:</td>
+                        <td class="p-0">
+                            <a href="https://www.google.es/maps/place/{{viaje.direccion_inicio}}">{{viaje.direccion_inicio}}</a>
+                        </td>
+                    </tr> <tr>
+                        <td class="p-0">Destino Final:</td>
+                        <td class="p-0">
+                            <a href="https://www.google.es/maps/place/{{viaje.direccion_destino}}">{{viaje.direccion_destino}}</a>
+                        </td>
+                    </tr> <tr>
+                        <td class="p-0">Detalles:</td>
+                        <td class="p-0">{{ viaje.detalles }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if session.usuario_id == viaje.conductor_id %}
+            <div class="d-flex justify-content-end">
+                <a href="/viaje_en_curso" class="btn btn-link p-0 mx-2"><u>Abrir</u></a>
+                |
+                <a href="/viajes/{{viaje.id}}/cancel_driver" class="btn btn-link p-0 mx-2"><u>Cancelar Viaje</u></a>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div> -->
+</div>
+{% endblock %}

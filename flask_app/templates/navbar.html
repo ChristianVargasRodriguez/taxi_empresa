@@ -1,0 +1,43 @@
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark h-4" style="height: 50px">
+    <div class="container">
+        <span class="navbar-brand ml-2 mb-0 h1"></span>
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Links and Buttons of Navigation panel-->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-2 ml-md-auto">
+            <!-- <p class="text-white">{{request.path}}</p> -->
+            {% if request.path == "/" %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login_register_taxistas"><u>Soy Taxista</u></a>
+                </li>
+            {% else %}
+        
+                {% if session %}
+                <li class="nav-item active">
+                <a class="nav-link" href="/viajes_realizados"><u>Viajes Realizados</u></a>
+                </li>
+        
+                <li class="nav-item">
+                <a class="nav-link active" href="/logout"><u>Log Out</u></a>
+                </li>
+                {% endif %}
+            
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+    </nav>
+    
