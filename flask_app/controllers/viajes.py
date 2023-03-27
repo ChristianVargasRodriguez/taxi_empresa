@@ -71,7 +71,7 @@ def editar_viaje(viaje_id):
     if request.method == 'POST':
         if not Ride.validate_ride(request.form, "edit"):
             return redirect(f"/viajes/{viaje_id}/editar")
-        Ride.update(request.form)
+        Ride.update_viaje(request.form)
         return redirect(f"/viajes/{viaje_id}")
     
     # GET REQUEST
@@ -117,3 +117,23 @@ def delete_viaje(viaje_id):
     Ride.destroy(data)
     return redirect("/pedir_viaje")
 
+
+
+
+
+
+@app.route('/viajes/valor', methods=['GET','POST'])
+def editar_valor_viaje(viaje_id):
+    # POST REQUEST 
+    if request.method == 'POST':
+        Ride.update_valor_viaje(request.form)
+        return redirect("/viaje_en_curso")
+    
+    # GET REQUEST
+    if 'usuario_id' not in session:
+        return redirect('/')
+    data = {
+        'id': viaje_id
+    }
+    viaje = Ride.get_one_with_users(data)
+    return render_template("viaje_en_curso.html", viaje=viaje)

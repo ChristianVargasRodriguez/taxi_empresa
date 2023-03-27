@@ -42,6 +42,24 @@
         
         {% if session.conductor_id == viaje.conductor_id %}
         <div class="mt-3">
+            <form action="/viajes/valor" method="post" class="p-4 col-md-8 col-lg-6 my-4 mx-5 bg-dark text-light">
+                <div class="form-group row">
+                    <label for="valor_viaje" class="col-sm-4 col-form-label">Valor del Viaje:</label>
+                    <div class="col-sm-8">
+                        <input type="number" name="valor_viaje" id="valor_viaje" class="form-control" value="0" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <input type="submit" value="Post" class="btn btn-success px-5" />
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+        <div class="mt-3">
             <a href="/viajes/{{viaje.id}}/cancel_driver" class="btn btn-link p-0 mx-1"><u>Cancelar mi conducción</u></a>
         </div>
         {% endif %}

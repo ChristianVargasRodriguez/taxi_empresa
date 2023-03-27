@@ -13,6 +13,7 @@ class Ride:
         self.detalles = db_data["detalles"] if db_data["detalles"] else None
         self.usuario_id = db_data["usuario_id"]
         self.conductor_id = db_data["conductor_id"] if db_data["conductor_id"] else None
+        self.valor_viaje = db_data["valor_viaje"] if db_data["valor_viaje"] else None
         self.created_at = db_data["created_at"]
         self.updated_at = db_data["updated_at"]
 
@@ -27,8 +28,8 @@ class Ride:
     @classmethod
     def save(cls, data):
         print(data)
-        query = "INSERT INTO viajes (direccion_inicio, direccion_destino, detalles, usuario_id, conductor_id, created_at, updated_at)\
-                VALUES (%(direccion_inicio)s, %(direccion_destino)s, %(detalles)s, %(usuario_id)s, NULL, NOW(), NOW());"
+        query = "INSERT INTO viajes (direccion_inicio, direccion_destino, detalles, usuario_id, conductor_id, valor_viaje, created_at, updated_at)\
+                VALUES (%(direccion_inicio)s, %(direccion_destino)s, %(detalles)s, %(usuario_id)s, NULL, NULL, NOW(), NOW());"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         return results
 
@@ -98,10 +99,21 @@ class Ride:
 
     # # 3) UPDATE OPERATIONS
     # # 3.1) Modificar Viaje
-    # @classmethod
-    # def update(cls, data):
-    #     query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(id)s;"
-    #     return connectToMySQL(cls.db_name).query_db(query, data)
+    @classmethod
+    def update_viaje(cls, data):
+        query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)
+    
+    @classmethod
+    def update_valor_viaje(cls, data):
+        query = "UPDATE viajes SET valor_viaje=%(valor_viaje)s WHERE id = %(id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)
+    
+
+
+
+
+
     
     # # 3.2) Agregar Conductor
     @classmethod
