@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `taxi_empresa`.`viajes` (
   `detalles` TEXT NULL,
   `usuario_id` INT NOT NULL,
   `conductor_id` INT NULL,
+  `valor_viaje` INT NULL,
   `created_at` DATETIME NULL DEFAULT NOW(),
   `updated_at` DATETIME NULL DEFAULT NOW(),
   PRIMARY KEY (`id`),
