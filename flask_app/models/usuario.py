@@ -5,7 +5,7 @@ import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$') 
 
 class User:
-    db_name = 'taxis_empresa'
+    db_name = 'taxi_empresa'
     def __init__(self,db_data):
         self.id = db_data['id']
         self.nombre = db_data['nombre']
@@ -23,7 +23,7 @@ class User:
     # 2.1) Create User
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO usuarios (nombre, apellido, email, empresa, cargo, telefono, password, created_at, updated_at) VALUES(%(nombre)s, %(apellido)s, %(email)s, %(empresa)s, %(cargo)s, %(telefono)s, %(password)s, NOW(), NOW())"
+        query = "INSERT INTO usuarios (nombre, apellido, empresa, cargo, telefono, email, password, created_at, updated_at) VALUES(%(nombre)s, %(apellido)s, %(empresa)s, %(cargo)s, %(telefono)s, %(email)s, %(password)s, NOW(), NOW())"
         results = connectToMySQL(cls.db_name).query_db(query,data) 
         return results
 
@@ -94,18 +94,23 @@ class User:
         if len(user['apellido']) < 2:
             is_valid = False
             flash("Apellido debe tener al menos 2 caracteres.","register")
-        if not EMAIL_REGEX.match(user['email']):
-            is_valid = False
-            flash("Invalid Email Address.","register")
         if len(user['empresa']) < 2:
             is_valid = False
             flash("Empresa debe tener al menos 2 caracteres.","register")
-        
         
         if user['cargo'] == "--Selecciona--":
             is_valid = False
             flash("Debes seleccionar tipo de cargo.","register")
 
+        if len(user['telefono']) != 11:
+            is_valid = False
+            flash("Teléfono debe ser de 11 caracteres (56123456789).","register")
+
+        if not EMAIL_REGEX.match(user['email']):
+            is_valid = False
+            flash("Direccion de Email Invalido.","register")
+
+        
 
         if len(user['password']) < 8:
             is_valid = False

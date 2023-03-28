@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class Ride:
-    db_name = "taxis_empresa"
+    db_name = "taxi_empresa"
 
     def __init__(self, db_data):
         self.id = db_data["id"]
@@ -70,7 +70,7 @@ class Ride:
     # # 1.2) Get One Ride with rider and driver
     @classmethod
     def get_one_with_users(cls, data):
-        query =  "SELECT * FROM viajes LEFT JOIN usuarios ON usuario.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viaje.id= %(id)s ;"
+        query =  "SELECT * FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         row = results[0]
         

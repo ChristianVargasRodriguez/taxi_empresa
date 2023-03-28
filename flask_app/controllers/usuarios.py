@@ -30,7 +30,8 @@ def register():
     if not id:
         flash("Email ya existe.","register")
         return redirect('/')
-
+    
+    session['usuario_id'] = id
     return redirect('/pedir_viaje')
 
 
@@ -54,8 +55,14 @@ def login():
         flash("Email, Empresa y/o Password Invalido","login")
         return redirect("/")
     
-    
+    session['usuario_id'] = usuario.id
     return redirect('/pedir_viaje')
+
+@app.route('/pedir_viaje')
+def pedir_viaje():
+    if 'usuario_id' not in session:
+        return redirect('/')
+    return render_template("pedir_viaje.html")
 
 
 

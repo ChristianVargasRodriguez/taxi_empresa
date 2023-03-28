@@ -10,8 +10,9 @@ from flask_app.models.viaje import Ride
 def solicitud_viaje():
     if "usuario_id" not in session:
         return redirect("/")
+    
     data = {"id": session["usuario_id"]}
-    solicitante = User.get_one_usuario(data)
+    usuario = User.get_one_usuario(data)
 
     # POST REQUEST
     if request.method == "POST":
@@ -19,18 +20,16 @@ def solicitud_viaje():
         if not is_valid:
             return redirect("/viajes/solicitud")
         Ride.save(request.form)
-        return redirect("/viaje_en_curso") ## DEBERIA SALIR POP-UP DE "---EN ESPERA DE CONDUCTOR---" cuando el conductor acepte, enviar a la pagina
-    return render_template("pedir_viaje.html", solicitante=solicitante)
+        return redirect("/viaje/en_curso") ## DEBERIA SALIR POP-UP DE "---EN ESPERA DE CONDUCTOR---" cuando el conductor acepte, enviar a la pagina
+    return render_template("pedir_viaje.html", usuario=usuario)
 
 
 
-@app.route("/viaje_en_curso")
+@app.route("/viaje/en_curso")
 def details_ride(viaje_id):
     if 'usuario_id' not in session:
         return redirect('/')
-    data = {
-        "id": viaje_id
-    }
+    data = {"id": viaje_id}
     viaje = Ride.get_one_with_users(data)
     # messages = Message.get_all(data)
     return render_template("viaje_en_curso.html", viaje=viaje) # , messages=messages
@@ -83,16 +82,6 @@ def editar_viaje(viaje_id):
     viaje = Ride.get_one_with_users(data)
     return render_template("edit_ride.html", viaje=viaje)
 
-@app.route('/viajes/<int:viaje_id>')
-def details_ride(viaje_id):
-    if 'usuario_id' not in session:
-        return redirect('/')
-    data = {
-        "id": viaje_id
-    }
-    viaje = Ride.get_one_with_users(data)
-    # messages = Message.get_all(data)
-    return render_template("viaje_en_curso.html", viaje=viaje) # , messages=messages
 
 
 @app.route("/viajes/<int:viaje_id>/add_driver/<int:conductor_id>")
@@ -127,7 +116,7 @@ def editar_valor_viaje(viaje_id):
     # POST REQUEST 
     if request.method == 'POST':
         Ride.update_valor_viaje(request.form)
-        return redirect("/viaje_en_curso")
+        return redirect("/viaje/en_curso")
     
     # GET REQUEST
     if 'usuario_id' not in session:

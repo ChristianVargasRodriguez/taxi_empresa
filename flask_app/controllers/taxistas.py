@@ -11,7 +11,7 @@ def login_register_taxistas():
     return render_template("login_taxista.html")
 
 @app.route('/register_taxista',methods=['POST'])
-def register():
+def register_taxista():
     is_valid = Taxista.validate_user(request.form)
     if not is_valid:
         return redirect("/")
@@ -58,6 +58,6 @@ def login_taxistas():
 
 
 @app.route('/logout')
-def logout():
+def logout_taxista():
     session.clear()
     return redirect('/')

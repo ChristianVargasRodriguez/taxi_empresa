@@ -23,12 +23,13 @@ CREATE TABLE IF NOT EXISTS `taxi_empresa`.`usuarios` (
   `apellido` VARCHAR(255) NULL,
   `empresa` VARCHAR(255) NULL,
   `cargo` VARCHAR(255) NULL,
-  `telefono` TINYINT(11) NULL,
+  `telefono` TEXT NULL,
   `email` VARCHAR(255) NULL,
   `password` VARCHAR(255) NULL,
   `created_at` DATETIME NULL DEFAULT NOW(),
   `updated_at` DATETIME NULL DEFAULT NOW(),
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
