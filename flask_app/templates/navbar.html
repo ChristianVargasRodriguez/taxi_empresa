@@ -19,15 +19,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-2 ml-md-auto">
             <!-- <p class="text-white">{{request.path}}</p> -->
-            {% if request.path == "/" %}
+                {% if request.path == "/" %}
                 <li class="nav-item active">
                     <a class="nav-link" href="/login_register_taxistas"><u>Soy Taxista</u></a>
                 </li>
-            {% else %}
+                {% else %}
         
                 {% if session %}
                 <li class="nav-item active">
-                <a class="nav-link" href="/viajes_realizados"><u>Viajes Realizados</u></a>
+                <a class="nav-link" href="/viajes_realizados/<int:viaje_id>"><u>Viajes Realizados</u></a>
                 </li>
         
                 <li class="nav-item">

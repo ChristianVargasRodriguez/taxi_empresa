@@ -1,6 +1,6 @@
 {% extends "base.html" %} 
 
-{% block title %} Viaje en Curso {% endblock%} 
+{% block title %} Viaje en Curso {% endblock %} 
 
 {% block content %}
 <div class="border border-2 border-dark p-4">
@@ -9,19 +9,20 @@
             <tbody class="mx-3">
                 <tr >
                     <td class="col-4 col-lg-2 p-0 border-0">Conductor:</td>
-                    <td class="col-8 col-lg-10 p-0 border-0">{{viaje.conductor}}</td>
+                    <td class="col-4 col-lg-2 p-0 border-0">{{viaje.conductor}}</td>
                 </tr>
                 <tr>
-                    <td class="col 8 col-lg-10 p-0 border-0">Recojer a <strong>{{viaje.solicitante}}</strong> en: </td>
-                </tr>
-                <tr>
-                    <td class="col 8 col-lg-10 p-0 border-0">
+                    <td class="col-lg-10 p-0 border-0">Recojer a <strong>{{viaje.solicitante}}</strong> en: </td>
+                    <td class="col-lg-10 p-0 border-0">
                         <a href="https://www.google.es/maps/place/{{viaje.direccion_inicio}}">{{viaje.direccion_inicio}}</a> 
                         <!-- Deberia abrir otra ventana y no cambiar la que está -->
                     </td>
                 </tr>
                 <tr>
-                    <td class="col 8 col-lg-10 p-0 border-0">
+                </tr>
+                <tr>
+                    <td class="col-lg-10 p-0 border-0"> Dirección de Destino:</td>
+                    <td class="col-lg-10 p-0 border-0">
                         <a href="https://www.google.es/maps/place/{{viaje.direccion_destino}}">{{viaje.direccion_destino}}</a> 
                         <!-- Deberia abrir otra ventana y no cambiar la que está -->
                     </td>
@@ -39,7 +40,7 @@
             <a href="/viajes/{{viaje.id}}/delete" class="btn btn-link p-0 mx-1"><u>Cancelar</u></a> -->
             <!-- Deberia salir pop-up de "Esta seguro de cancelar viaje, el conductor ya está en camino" -->
             </div>
-        
+        {% endif %}
         {% if session.conductor_id == viaje.conductor_id %}
         <div class="mt-3">
             <form action="/viajes/valor" method="post" class="p-4 col-md-8 col-lg-6 my-4 mx-5 bg-dark text-light">
@@ -65,5 +66,6 @@
         {% endif %}
         </div>
     </div>
+</div>
 
 {% endblock %}

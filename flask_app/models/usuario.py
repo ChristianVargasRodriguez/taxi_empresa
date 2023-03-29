@@ -102,9 +102,9 @@ class User:
             is_valid = False
             flash("Debes seleccionar tipo de cargo.","register")
 
-        if len(user['telefono']) != 11:
+        if len(user['telefono']) > 11:
             is_valid = False
-            flash("Teléfono debe ser de 11 caracteres (56123456789).","register")
+            flash("Teléfono debe ser al menos de 11 caracteres.","register")
 
         if not EMAIL_REGEX.match(user['email']):
             is_valid = False

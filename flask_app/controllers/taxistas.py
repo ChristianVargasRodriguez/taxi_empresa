@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, session, flash
 from flask_bcrypt import Bcrypt
 from flask_app import app
 from flask_app.models.taxista import Taxista
+from flask_app.models.viaje import Ride
 # from flask_app.models.viaje import Ride
 
 bcrypt = Bcrypt(app)
@@ -14,7 +15,7 @@ def login_register_taxistas():
 def register_taxista():
     is_valid = Taxista.validate_user(request.form)
     if not is_valid:
-        return redirect("/")
+        return redirect("/login_register_taxistas")
     
     conductor = {
         "nombre": request.form["nombre"],
@@ -28,8 +29,9 @@ def register_taxista():
     id = Taxista.save(conductor)
     if not id:
         flash("Email ya existe.","register")
-        return redirect('/register_taxista')
+        return redirect('/login_register_taxistas')
 
+    session['conductor_id'] = id
     return render_template("dashboard_taxista.html")
 
 
@@ -40,8 +42,10 @@ def login_taxistas():
         "empresa": request.form['empresa']
     }
     conductor = Taxista.get_by_email(data)
+    print("---------------------------------------------------------------")
+    print(conductor)
     empresa = Taxista.get_by_empresa(data)
-
+    print(empresa)
 
     if not conductor:
         flash("Email, Empresa y/o Password Invalido","login")
@@ -53,7 +57,31 @@ def login_taxistas():
         flash("Email, Empresa y/o Password Invalido","login")
         return render_template("/login_taxista.html")
     
-    return render_template("/dashboard_taxista.html")
+    session['conductor_id'] = conductor.id
+    return redirect('/viajes/disponibles')
+
+
+
+
+# @app.route("/viajes/disponibles")
+# def viajes_disponibles():
+#     if "conductor_id" not in session:
+#         return redirect("/")
+#     rides = Ride.get_all_viajes()
+
+#     # rides_without_driver = [r for r in rides if r.driver == None]
+#     # rides_with_driver = [r for r in rides if r.driver != None]
+
+#     rides_without_driver = []
+#     rides_with_driver = []
+#     for r in rides:
+#         if(r.driver == None):
+#             rides_without_driver.append(r)
+#         else:
+#             rides_with_driver.append(r)
+
+#     # users = User.get_all()
+#     return render_template("dashboard.html",rider=rider, rides_without_driver=rides_without_driver, rides_with_driver=rides_with_driver)
 
 
 

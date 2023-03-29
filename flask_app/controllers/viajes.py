@@ -19,33 +19,29 @@ def solicitud_viaje():
         is_valid = Ride.validate_ride(request.form, "new")
         if not is_valid:
             return redirect("/viajes/solicitud")
-        Ride.save(request.form)
-        return redirect("/viaje/en_curso") ## DEBERIA SALIR POP-UP DE "---EN ESPERA DE CONDUCTOR---" cuando el conductor acepte, enviar a la pagina
+        viaje_id = Ride.save(request.form)
+        return redirect(f"/viaje/en_curso/{viaje_id}/") ## DEBERIA SALIR POP-UP DE "---EN ESPERA DE CONDUCTOR---" cuando el conductor acepte, enviar a la pagina
     return render_template("pedir_viaje.html", usuario=usuario)
 
 
 
-@app.route("/viaje/en_curso")
+@app.route("/viaje/en_curso/<int:viaje_id>/")
 def details_ride(viaje_id):
     if 'usuario_id' not in session:
         return redirect('/')
-    data = {"id": viaje_id}
-    viaje = Ride.get_one_with_users(data)
-    # messages = Message.get_all(data)
-    return render_template("viaje_en_curso.html", viaje=viaje) # , messages=messages
+    data_2 = {"id": viaje_id}
+    viaje = Ride.get_one_with_users(data_2)
+    return render_template("viaje_en_curso.html", viaje=viaje) 
 
 
 
 
-
-
-
-@app.route("/viajes/conductores")
-def conductores_dashboard():
-    if "usuario_id" not in session:
+@app.route("/viajes/disponibles")
+def viajes_disponibles():
+    if "conductor_id" not in session:
         return redirect("/")
-    data = {"id": session["usuario_id"]}
-    conductor = User.get_one_usuario(data)
+    data = {"id": session["conductor_id"]}
+    conductor_id = User.get_one_usuario(data)
     viajes = Ride.get_all()
 
     # viajes_sin_conductor = [r for r in viajes if r.conductor == None]
@@ -54,13 +50,13 @@ def conductores_dashboard():
     viajes_sin_conductor = []
     viajes_con_conductor = []
     for r in viajes:
-        if(r.conductor == None):
+        if(r.conductor_id == None):
             viajes_sin_conductor.append(r)
         else:
             viajes_con_conductor.append(r)
 
     # solicitantes = User.get_all()
-    return render_template("viajes_en_espera.html",conductor=conductor, viajes_sin_conductor=viajes_sin_conductor, viajes_con_conductor=viajes_con_conductor)
+    return render_template("dashboard_taxista.html",conductor_id=conductor_id, viajes_sin_conductor=viajes_sin_conductor, viajes_con_conductor=viajes_con_conductor)
 
 
 
@@ -70,8 +66,8 @@ def editar_viaje(viaje_id):
     if request.method == 'POST':
         if not Ride.validate_ride(request.form, "edit"):
             return redirect(f"/viajes/{viaje_id}/editar")
-        Ride.update_viaje(request.form)
-        return redirect(f"/viajes/{viaje_id}")
+        Ride.editar_viaje(request.form)
+        return redirect(f"/viaje/en_curso/{viaje_id}/")
     
     # GET REQUEST
     if 'usuario_id' not in session:
@@ -80,15 +76,26 @@ def editar_viaje(viaje_id):
         'id': viaje_id
     }
     viaje = Ride.get_one_with_users(data)
-    return render_template("edit_ride.html", viaje=viaje)
+    return render_template("editar_viaje.html", viaje=viaje)
 
 
 
 @app.route("/viajes/<int:viaje_id>/add_driver/<int:conductor_id>")
 def add_driver(viaje_id, conductor_id):
     data = {"id": viaje_id, "conductor_id": conductor_id}
-    Ride.add_driver(data)
-    return render_template("viaje_en_curso.html")
+    data_2 = {"id": viaje_id}
+    viaje = Ride.add_driver(data)
+    en_curso = Ride.get_one_with_users(data_2)
+    return render_template("viaje_en_curso.html", viaje=viaje, en_curso=en_curso)
+
+
+    if 'usuario_id' not in session:
+        return redirect('/')
+    data_2 = {"id": viaje_id}
+    viaje = Ride.get_one_with_users(data_2)
+    return render_template("viaje_en_curso.html", viaje=viaje) 
+
+
 
 @app.route('/viajes/<int:viaje_id>/cancel_driver')
 def cancel_driver(viaje_id):
@@ -126,3 +133,12 @@ def editar_valor_viaje(viaje_id):
     }
     viaje = Ride.get_one_with_users(data)
     return render_template("viaje_en_curso.html", viaje=viaje)
+
+
+@app.route("/viajes_realizados/<int:viaje_id>")
+def rides_dashboard():
+    if "user_id" not in session:
+        return redirect("/")
+    data = {"id": session["user_id"]}
+    viajes_por_usuario = Ride.get_all()
+    rides = Ride.get_all()

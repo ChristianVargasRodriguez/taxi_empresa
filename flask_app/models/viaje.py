@@ -41,12 +41,12 @@ class Ride:
     # # 1.1) Obtener todos los Viajes
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM viajes LEFT JOIN usuarios ON usuario.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id;"
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, usuarios.nombre AS usuario_nombre, usuarios.apellido AS usuario_apellido, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id;"
         results = connectToMySQL(cls.db_name).query_db(query)
         viajes = []
         for row in results:
-            if row["conductores.nombre"]:
-                conductor = row["conductores.nombre"] + " " + row["conductores.apellido"]
+            if row["conductor_nombre"]:
+                conductor = row["conductor_nombre"] + " " + row["conductor_apellido"]
             else:
                 conductor = None
 
@@ -54,13 +54,13 @@ class Ride:
                 "id": row["id"],
                 "direccion_inicio": row["direccion_inicio"],
                 "direccion_destino": row["direccion_destino"],
-                # "rideshare_date": datetime.strptime(row["rideshare_date"], "%Y-%m-%d").date() if row["rideshare_date"] != "" else "",
                 "detalles": row["detalles"],
-                "solicitante_id": row["solicitante_id"],
+                "usuario_id": row["usuario_id"],
                 "conductor_id": row["conductor_id"],
+                "valor_viaje": row["valor_viaje"],
                 "created_at": row["created_at"],
                 "updated_at": row["updated_at"],
-                "solicitante": (row["nombre"] + " " + row["apellido"]),
+                "solicitante": (row["usuario_nombre"] + " " + row["usuario_apellido"]),
                 "conductor": conductor 
             }
             viajes.append(cls(data))
@@ -69,38 +69,38 @@ class Ride:
     
     # # 1.2) Get One Ride with rider and driver
     @classmethod
-    def get_one_with_users(cls, data):
-        query =  "SELECT * FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
-        results = connectToMySQL(cls.db_name).query_db(query, data)
+    def get_one_with_users(cls, data_2):
+        query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, usuario.nombre AS usuario_nombre, usuario.apellido AS usuario_apellido, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuario ON usuario.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
+        results = connectToMySQL(cls.db_name).query_db(query, data_2)
         row = results[0]
         
-        # if row['conductores.nombre']:
-        #     driver = row['conductores.nombre'] + " " + row['conductores.apellido']
-        # else:
-        #     driver = None
-        
+        if row['conductor_nombre']:
+            driver = row['conductor_nombre'] + " " + row['conductor_apellido']
+        else:
+            driver = None
+
         data_2 = {
             "id" : row["id"],
             "usuario_id": row["usuario_id"],
             "direccion_inicio": row["direccion_inicio"],
             "direccion_destino": row["direccion_destino"],
-            # "rideshare_date": datetime.strptime(row["rideshare_date"], "%Y-%m-%d").date() if row["rideshare_date"] != "" else "",
             "detalles": row["detalles"],
             "conductor_id": row["conductor_id"],
             "created_at" : row['created_at'],
             "updated_at" : row['updated_at'],
-            "solicitante" : row['usuarios.nombre'] + " " + row['usuarios.apellido'],
-            "conductor" : row['conductores.nombre'] + " " + row['conductores.apellido']
+            "valor_viaje": row['valor_viaje'],
+            "solicitante": row['usuario_nombre'] + " " + row['usuario_apellido'],
+            "conductor" : driver
         }
-        
-        ride = cls(data_2)
-        return ride
+
+        viaje = cls(data_2)
+        return viaje
 
 
     # # 3) UPDATE OPERATIONS
     # # 3.1) Modificar Viaje
     @classmethod
-    def update_viaje(cls, data):
+    def editar_viaje(cls, data):
         query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
     
