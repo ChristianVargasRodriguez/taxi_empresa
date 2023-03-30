@@ -104,3 +104,16 @@ def editar_valor_viaje(viaje_id):
     Ride.update_valor_viaje(request.form)
     return redirect(f"/viaje/en_curso/{viaje_id}/")
 
+
+@app.route('/todos_los_viajes')
+def todos_los_viajes():
+    viajes = Ride.get_all()
+    todo_viajes = []
+    
+    for t in viajes:
+        if (t.id):
+            todo_viajes.append(t)
+    
+    
+    print(viajes)
+    return render_template("todo_viajes.html", viajes=viajes, todo_viajes=todo_viajes)

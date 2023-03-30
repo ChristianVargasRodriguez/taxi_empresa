@@ -18,14 +18,6 @@ class Ride:
         self.created_at = db_data["created_at"]
         self.updated_at = db_data["updated_at"]
 
-        # ------ Pyhon Sorthand If Else ------
-        # self.usuario = db_data["usuario"] if db_data["usuario"] else None
-        # self.conductor = db_data["conductor"] if db_data["conductor"] else None
-
-
-
-    # 2) CREATE OPERATIONS
-    # 2.1) Crear Viaje
     @classmethod
     def save(cls, data):
         print(data)
@@ -35,11 +27,6 @@ class Ride:
         return results
 
 
-
-
-
-    # # 1) READ OPERATIONS
-    # # 1.1) Obtener todos los Viajes
     @classmethod
     def get_all(cls):
         query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, usuarios.nombre AS usuario_nombre, usuarios.apellido AS usuario_apellido, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id;"
@@ -85,7 +72,6 @@ class Ride:
         return result_set
 ###################################################################
     
-    # # 1.2) Get One Ride with rider and driver
     @classmethod
     def get_one_with_users(cls, data):
         query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
@@ -93,8 +79,6 @@ class Ride:
         return results
 
 
-    # # 3) UPDATE OPERATIONS
-    # # 3.1) Modificar Viaje
     @classmethod
     def editar_viaje(cls, data):
         query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(viaje_id)s;"
@@ -106,27 +90,24 @@ class Ride:
         return connectToMySQL(cls.db_name).query_db(query, data)
     
 
-    # # 3.2) Agregar Conductor
     @classmethod
     def add_driver(cls, data):
         query = "UPDATE viajes SET conductor_id=%(conductor_id)s WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
-    
-    # # 3.3) Conductor Cancela Viaje
+
+
     @classmethod
     def cancel_driver(cls, data):
         query = "UPDATE viajes SET conductor_id=NULL WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
 
-    # # 4) DELETE OPERATIONS
-    # # 4.1) Borrar Viaje
+
     @classmethod
     def destroy(cls, data):
         query = "DELETE FROM viajes WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
 
-        # 5) VALIDATIOS
-    # 5.1) Validate Viaje
+
     @staticmethod
     def validate_ride(ride,type):
         is_valid = True

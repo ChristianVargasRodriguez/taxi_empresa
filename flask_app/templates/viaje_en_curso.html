@@ -40,16 +40,21 @@
                 <p> {{ viaje[0]['valor_viaje'] }} </p>
             </div>
         </div>
-            {% if viaje[0]['valor_viaje'] == NULL %}
+            {% if viaje[0]['valor_viaje'] == None %}
             <div class="mt-3">
                 <a href="/viajes/{{viaje[0]['id']}}/editar" class="btn btn-link p-0 mx-1"><u>Editar</u></a>
+            </div>
+            {% endif %}
+            {% if viaje[0]['valor_viaje'] != None %}
+            <div class="mt-3">
+                <a href="/pedir_viaje" class="btn btn-link p-0 mx-1"><u>Pedir nuevo viaje</u></a>
             </div>
             {% endif %}
 
         {% endif %}
         {% if session.conductor_id == viaje[0]['conductor_id']%}
         <div class="mt-3">
-            {% if viaje[0]['valor_viaje'] == NULL %}
+            {% if viaje[0]['valor_viaje'] == None %}
             <form action="/viajes/{{viaje[0]['id']}}/valor" method="post">
                 <div class="form-group row">
                     <label for="valor_viaje" class="col-sm-4 col-form-label">Valor del Viaje:</label>
@@ -64,6 +69,9 @@
                     </div>
                 </div>
             </form>
+            <div class="mt-3">
+                <a href="/viajes/{{viaje[0]['id']}}/cancel_driver" class="btn btn-link p-0 mx-1"><u>Cancelar mi conducción</u></a>
+            </div>
             {% else %}
             <div class="form-group row">
                 <p class="col-sm-6 col-form-label">Valor del Viaje:</p>
@@ -73,10 +81,11 @@
             </div>
             {% endif %}
         </div>
-
-        <div class="mt-3">
-            <a href="/viajes/{{viaje[0]['id']}}/cancel_driver" class="btn btn-link p-0 mx-1"><u>Cancelar mi conducción</u></a>
-        </div>
+            {% if viaje[0]['valor_viaje'] != None %}
+            <div class="mt-3">
+                <a href="/viajes/disponibles" class="btn btn-link p-0 mx-1"><u>Buscar viaje</u></a>
+            </div>
+            {% endif %}
         {% endif %}
         </div>
     </div>

@@ -23,14 +23,21 @@
                     <a class="nav-link" href="/login_register_taxistas"><u>Soy Taxista</u></a>
                 </li>
                 {% else %}
-
+        
+                
                 {% if session.usuario_id %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
+                </li>
                 <li class="nav-item">
                 <a class="nav-link active" href="/logout"><u>Log Out</u></a>
                 </li>
                 {% endif %}
 
                 {% if session.conductor_id %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
+                </li>
                 <li class="nav-item">
                 <a class="nav-link active" href="/logout"><u>Log Out</u></a>
                 </li>

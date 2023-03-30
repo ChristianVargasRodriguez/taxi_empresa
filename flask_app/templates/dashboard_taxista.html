@@ -47,7 +47,7 @@
         <h3 class="text-center">Viaje En Curso</h3>
         <hr class="bg-warning" />
     {% for viaje in viajes_con_conductor %}
-        {% if session.conductor_id == viaje.conductor_id %}
+        {% if session.conductor_id == viaje.conductor_id and viaje.valor_viaje == None %}
         <div class="p-2 border border-round border-light mb-4 bg-dark">
             <table class="table table-borderless mb-0 text-white">
                 <tbody>

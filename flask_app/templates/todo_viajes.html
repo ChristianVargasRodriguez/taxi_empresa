@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+
+{% block title %} Todos los Viajes {% endblock %} 
+
+{% block content %}
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th class="col-2">Dirección Inicio</th>
+            <th class="col-2">Dirección Destino</th>
+            <th class="col-2">Detalles</th>
+            <th class="col-2">Valor Viaje</th>
+            <th class="col-2">Fecha de Creación</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for viaje in viajes %}
+        <tr>
+            <td class="col-2">{{ viaje.direccion_inicio }}</td>
+            <td class="col-2">{{ viaje.direccion_destino }}</td>
+            <td class="col-2">{{ viaje.detalles }}</td>
+            <td class="col-2">{{ viaje.valor_viaje }}</td>
+            <td class="col-2">{{ viaje.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}
