@@ -32,7 +32,7 @@ def register_taxista():
         return redirect('/login_register_taxistas')
 
     session['conductor_id'] = id
-    return render_template("dashboard_taxista.html")
+    return redirect('/viajes/disponibles')
 
 
 @app.route("/login_taxistas",methods=['POST'])
@@ -42,10 +42,7 @@ def login_taxistas():
         "empresa": request.form['empresa']
     }
     conductor = Taxista.get_by_email(data)
-    print("---------------------------------------------------------------")
-    print(conductor)
     empresa = Taxista.get_by_empresa(data)
-    print(empresa)
 
     if not conductor:
         flash("Email, Empresa y/o Password Invalido","login")
@@ -61,27 +58,6 @@ def login_taxistas():
     return redirect('/viajes/disponibles')
 
 
-
-
-# @app.route("/viajes/disponibles")
-# def viajes_disponibles():
-#     if "conductor_id" not in session:
-#         return redirect("/")
-#     rides = Ride.get_all_viajes()
-
-#     # rides_without_driver = [r for r in rides if r.driver == None]
-#     # rides_with_driver = [r for r in rides if r.driver != None]
-
-#     rides_without_driver = []
-#     rides_with_driver = []
-#     for r in rides:
-#         if(r.driver == None):
-#             rides_without_driver.append(r)
-#         else:
-#             rides_with_driver.append(r)
-
-#     # users = User.get_all()
-#     return render_template("dashboard.html",rider=rider, rides_without_driver=rides_without_driver, rides_with_driver=rides_with_driver)
 
 
 

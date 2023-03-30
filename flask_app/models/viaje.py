@@ -1,3 +1,4 @@
+import pymysql
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from datetime import datetime
@@ -67,41 +68,36 @@ class Ride:
 
         return viajes
     
+###################################################################
+    @classmethod
+    def search(cls, term):
+        query = "SELECT * FROM games WHERE name LIKE %s"
+        conn = pymysql.connect(host = 'localhost',
+                                    user = 'root',
+                                    password = 'root', 
+                                    db = 'gamedb',
+                                    charset = 'utf8mb4',
+                                    cursorclass = pymysql.cursors.DictCursor,
+                                    autocommit = True)
+        cur = conn.cursor()
+        cur.execute(query, ('%' + term + '%',))
+        result_set = cur.fetchall()
+        return result_set
+###################################################################
+    
     # # 1.2) Get One Ride with rider and driver
     @classmethod
-    def get_one_with_users(cls, data_2):
-        query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, usuario.nombre AS usuario_nombre, usuario.apellido AS usuario_apellido, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuario ON usuario.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
-        results = connectToMySQL(cls.db_name).query_db(query, data_2)
-        row = results[0]
-        
-        if row['conductor_nombre']:
-            driver = row['conductor_nombre'] + " " + row['conductor_apellido']
-        else:
-            driver = None
-
-        data_2 = {
-            "id" : row["id"],
-            "usuario_id": row["usuario_id"],
-            "direccion_inicio": row["direccion_inicio"],
-            "direccion_destino": row["direccion_destino"],
-            "detalles": row["detalles"],
-            "conductor_id": row["conductor_id"],
-            "created_at" : row['created_at'],
-            "updated_at" : row['updated_at'],
-            "valor_viaje": row['valor_viaje'],
-            "solicitante": row['usuario_nombre'] + " " + row['usuario_apellido'],
-            "conductor" : driver
-        }
-
-        viaje = cls(data_2)
-        return viaje
+    def get_one_with_users(cls, data):
+        query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        return results
 
 
     # # 3) UPDATE OPERATIONS
     # # 3.1) Modificar Viaje
     @classmethod
     def editar_viaje(cls, data):
-        query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(id)s;"
+        query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(viaje_id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
     
     @classmethod
@@ -110,11 +106,6 @@ class Ride:
         return connectToMySQL(cls.db_name).query_db(query, data)
     
 
-
-
-
-
-    
     # # 3.2) Agregar Conductor
     @classmethod
     def add_driver(cls, data):
@@ -122,10 +113,10 @@ class Ride:
         return connectToMySQL(cls.db_name).query_db(query, data)
     
     # # 3.3) Conductor Cancela Viaje
-    # @classmethod
-    # def cancel_driver(cls, data):
-    #     query = "UPDATE viajes SET conductor_id=NULL WHERE id = %(id)s;"
-    #     return connectToMySQL(cls.db_name).query_db(query, data)
+    @classmethod
+    def cancel_driver(cls, data):
+        query = "UPDATE viajes SET conductor_id=NULL WHERE id = %(id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)
 
     # # 4) DELETE OPERATIONS
     # # 4.1) Borrar Viaje
@@ -146,3 +137,4 @@ class Ride:
             is_valid = False
             flash("Direccion de destino debe contener al menos 8 caracteres.","ride")
         return is_valid
+    

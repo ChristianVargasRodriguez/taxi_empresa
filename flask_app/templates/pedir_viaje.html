@@ -3,7 +3,7 @@
 {% block title %} Solicitud de Viaje {% endblock%} 
 
 {% block content %}
-<h2 class="font-weight-bold"> Bienvenido/a {{session.nombre}} {{session.apellido}} !</h2>
+<h2 class="font-weight-bold"> Bienvenido/a {{usuario[0]['nombre']}} {{usuario[0]['apellido']}} !</h2>
 
 <hr class="border border-black" />
 <div class="row">
@@ -47,15 +47,7 @@
     </div>
 
     <!-- Quien Solicita el viaje (Hidden) -->
-    <input hidden type="text" name="usuario_id" id="usuario_id" value={{session.usuario_id}} />
-
-
-    <!-- conductor_id    (Hidden) -->
-    <!-- <input hidden type="text" name="conductor_id" id="conductor_id" value=NULL /> -->
-
-    
-    <!-- Valor del viaje (Hidden) -->
-    <input hidden type="text" name="valor_viaje" id="valor_viaje" value=NULL />
+    <input hidden type="text" name="usuario_id" id="usuario_id" value={{usuario[0]['id']}} />
 
 
 

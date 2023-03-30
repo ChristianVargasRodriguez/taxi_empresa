@@ -58,11 +58,14 @@ def login():
     session['usuario_id'] = usuario.id
     return redirect('/pedir_viaje')
 
+
 @app.route('/pedir_viaje')
 def pedir_viaje():
     if 'usuario_id' not in session:
         return redirect('/')
-    return render_template("pedir_viaje.html")
+    data = {"id": session["usuario_id"]}
+    usuario = User.get_one_usuario(data)
+    return render_template("pedir_viaje.html", usuario=usuario)
 
 
 

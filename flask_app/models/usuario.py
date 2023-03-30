@@ -47,7 +47,7 @@ class User:
         results = connectToMySQL(cls.db_name).query_db(query,data)
         if len(results) < 1:
             return False
-        return cls(results[0])
+        return results
 
     # 1.3) Get One User By Email
     @classmethod
@@ -97,21 +97,16 @@ class User:
         if len(user['empresa']) < 2:
             is_valid = False
             flash("Empresa debe tener al menos 2 caracteres.","register")
-        
         if user['cargo'] == "--Selecciona--":
+            print(user['cargo'])
             is_valid = False
             flash("Debes seleccionar tipo de cargo.","register")
-
-        if len(user['telefono']) > 11:
+        if len(user['telefono']) != 11:
             is_valid = False
-            flash("Teléfono debe ser al menos de 11 caracteres.","register")
-
+            flash("Teléfono debe ser de 11 caracteres.","register")
         if not EMAIL_REGEX.match(user['email']):
             is_valid = False
             flash("Direccion de Email Invalido.","register")
-
-        
-
         if len(user['password']) < 8:
             is_valid = False
             flash("Password debe tener al menos 8 caracteres.","register")

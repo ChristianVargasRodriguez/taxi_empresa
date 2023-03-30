@@ -11,7 +11,7 @@
     <div class="col-5">
         <form action="/register" method="post" class="p-4 bg-dark text-light">
             <!-- Form Subtitle -->
-            <h2 class="text-primary">Registero</h2>
+            <h2 class="text-primary">Registro</h2>
             <!-- Error Messages -->
             {% with messages = get_flashed_messages(category_filter=['register']) %}
                 {% if messages %}
@@ -39,15 +39,15 @@
             <div class="form-group">
                 <label for="cargo">Cargo:</label>
                 <select id="cargo" name="cargo" class="form-control">
-                    <option value="administrador">--Selecciona--</option>
+                    <option value="--Selecciona--">--Selecciona--</option>
                     <option value="administrador">Administrador</option>
                     <option value="coordinador">Coordinador</option>
                     <option value="colaborador">Colaborador</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="telefono">Telefono:</label>
-                <input type="number" name="telefono" id="telefono" placeholder="56XXXXXXXXX" class="form-control">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono" placeholder="56XXXXXXXXX" class="form-control">
                 <small>Formato: 56123456789</small>
             </div>
             <div class="form-group">
