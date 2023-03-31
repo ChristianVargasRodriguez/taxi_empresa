@@ -46,9 +46,7 @@
                             <button class="btn btn-danger">Conductor</button>
                             <div class="dropdown-content">
                                 {% if session.conductor_id %}
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
-                                </li>
+                                    <a class="nav-link text-black" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
                                 <form action="/logout" method="POST">
                                     <button class="btn btn-link text-dark">Salir</button>
                                 </form>
