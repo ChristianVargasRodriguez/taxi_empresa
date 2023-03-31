@@ -10,7 +10,11 @@ bcrypt = Bcrypt(app)
 def index():
     return render_template("index.html")
 
-@app.route('/register',methods=['POST'])
+@app.route('/register_usuarios')
+def register_usuarios():
+    return render_template("register_usuario.html")
+
+@app.route('/register_usuario',methods=['POST'])
 def register():
     is_valid = User.validate_user(request.form)
     if not is_valid:
@@ -34,8 +38,12 @@ def register():
     session['usuario_id'] = id
     return redirect('/pedir_viaje')
 
+@app.route('/login_usuarios')
+def login_usuarios():
+    return render_template("login_usuario.html")
 
-@app.route("/login",methods=['POST'])
+
+@app.route("/login_usuario",methods=['POST'])
 def login():
     data = {
         "email": request.form['email'],
@@ -69,7 +77,7 @@ def pedir_viaje():
 
 
 
-@app.route('/logout')
+@app.route('/logout', methods = ['POST'])
 def logout():
     session.clear()
     return redirect('/')

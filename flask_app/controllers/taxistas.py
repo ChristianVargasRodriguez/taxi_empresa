@@ -7,9 +7,13 @@ from flask_app.models.viaje import Ride
 
 bcrypt = Bcrypt(app)
 
-@app.route('/login_register_taxistas')
-def login_register_taxistas():
+@app.route('/login_taxistas')
+def login_taxistas():
     return render_template("login_taxista.html")
+
+@app.route('/register_taxistas')
+def register_taxistas():
+    return render_template("register_taxista.html")
 
 @app.route('/register_taxista',methods=['POST'])
 def register_taxista():
@@ -35,8 +39,8 @@ def register_taxista():
     return redirect('/viajes/disponibles')
 
 
-@app.route("/login_taxistas",methods=['POST'])
-def login_taxistas():
+@app.route("/login_taxista",methods=['POST'])
+def login_taxista():
     data = {
         "email": request.form['email'],
         "empresa": request.form['empresa']

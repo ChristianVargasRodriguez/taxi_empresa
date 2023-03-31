@@ -1,0 +1,71 @@
+{% extends "base.html" %} 
+
+{% block title %}
+Acceso Taxista
+{% endblock %}
+
+{% block content %}
+
+<h1 class="row justify-content-around" > Ingresa para solicitar tu viaje!</h1>
+<div class="row justify-content-around pt-5 pb-4">
+    <!-- 2.1) Registration Form -->
+    <div class="col-5">
+        <form action="/register_usuario" method="post" class="p-4 bg-dark text-light">
+            <!-- Form Subtitle -->
+            <h2 class="text-primary">Registro</h2>
+            <!-- Error Messages -->
+            {% with messages = get_flashed_messages(category_filter=['register']) %}
+                {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error:</strong>
+                        {% for message in messages %}
+                            <p class="m-0"> - {{message}}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %} 
+            {% endwith %}
+            <!-- Form Inputs -->
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" id="nombre" class="form-control"  />
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" name="apellido" id="apellido" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="empresa">Empresa:</label>
+                <input type="text" name="empresa" id="empresa" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo:</label>
+                <select id="cargo" name="cargo" class="form-control">
+                    <option value="--Selecciona--">--Selecciona--</option>
+                    <option value="administrador">Administrador</option>
+                    <option value="coordinador">Coordinador</option>
+                    <option value="colaborador">Colaborador</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono" placeholder="56XXXXXXXXX" class="form-control">
+                <small>Formato: 56123456789</small>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" name="email" id="email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" required name="password" id="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="confirm">Confirmar contraseña:</label>
+                <input type="password" required name="confirm" id="confirm" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarme</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
