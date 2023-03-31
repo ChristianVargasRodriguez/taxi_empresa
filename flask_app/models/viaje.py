@@ -29,6 +29,13 @@ class Ride:
 
     @classmethod
     def get_all(cls):
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id;"
+        results = connectToMySQL(cls.db_name).query_db(query)
+        return results
+
+
+    @classmethod
+    def get_all_para_conductor(cls):
         query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, usuarios.nombre AS usuario_nombre, usuarios.apellido AS usuario_apellido, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id;"
         results = connectToMySQL(cls.db_name).query_db(query)
         viajes = []
@@ -54,7 +61,23 @@ class Ride:
             viajes.append(cls(data))
 
         return viajes
-    
+
+
+    @classmethod
+    def get_by_conductor(cls, conductor_id):
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.conductor_id = %(conductor_id)s;"
+        data = { "conductor_id": conductor_id }
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        return results
+
+
+    @classmethod
+    def get_by_usuario(cls, usuario_id):
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.usuario_id = %(usuario_id)s"
+        data = { "usuario_id": usuario_id }
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        return results
+
 ###################################################################
     @classmethod
     def search(cls, term):

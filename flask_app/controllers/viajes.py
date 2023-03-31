@@ -3,7 +3,6 @@ from flask_app import app
 from flask_app.models.taxista import Taxista
 from flask_app.models.usuario import User
 from flask_app.models.viaje import Ride
-# from flask_app.models.message import Message
 
 
 
@@ -68,7 +67,7 @@ def viajes_disponibles():
         return redirect("/")
     data = {"id": session["conductor_id"]}
     conductorX = Taxista.get_one_taxista(data)
-    viajes = Ride.get_all()
+    viajes = Ride.get_all_para_conductor()
 
     viajes_sin_conductor = []
     viajes_con_conductor = []
@@ -107,13 +106,25 @@ def editar_valor_viaje(viaje_id):
 
 @app.route('/todos_los_viajes')
 def todos_los_viajes():
-    viajes = Ride.get_all()
-    todo_viajes = []
+    if "usuario_id" in session:
+        usuario_id = session.get("usuario_id")
+        data = { "id": usuario_id}
+
+        cargo = User.get_cargo_usuario(data)
+        cargo = cargo[0]["cargo"]
+
+        if cargo == "administrador":
+            todo_viajes = Ride.get_all()
+        elif cargo == "coordinador":
+            todo_viajes = Ride.get_by_usuario(usuario_id)
+        else:
+            todo_viajes = Ride.get_by_usuario(usuario_id)
+        
+        return render_template("todo_viajes.html", todo_viajes=todo_viajes)
     
-    for t in viajes:
-        if (t.id):
-            todo_viajes.append(t)
-    
-    
-    print(viajes)
-    return render_template("todo_viajes.html", viajes=viajes, todo_viajes=todo_viajes)
+    if "conductor_id" in session:
+        conductor_id = session.get("conductor_id")
+        data = {"id": conductor_id}
+        todo_viajes = Ride.get_by_conductor(conductor_id)
+
+        return render_template("todo_viajes.html", todo_viajes=todo_viajes)

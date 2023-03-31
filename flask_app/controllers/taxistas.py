@@ -3,13 +3,8 @@ from flask_bcrypt import Bcrypt
 from flask_app import app
 from flask_app.models.taxista import Taxista
 from flask_app.models.viaje import Ride
-# from flask_app.models.viaje import Ride
 
 bcrypt = Bcrypt(app)
-
-@app.route('/login_taxistas')
-def login_taxistas():
-    return render_template("login_taxista.html")
 
 @app.route('/register_taxistas')
 def register_taxistas():
@@ -19,7 +14,7 @@ def register_taxistas():
 def register_taxista():
     is_valid = Taxista.validate_user(request.form)
     if not is_valid:
-        return redirect("/login_register_taxistas")
+        return redirect("/register_taxistas")
     
     conductor = {
         "nombre": request.form["nombre"],
@@ -33,18 +28,24 @@ def register_taxista():
     id = Taxista.save(conductor)
     if not id:
         flash("Email ya existe.","register")
-        return redirect('/login_register_taxistas')
+        return redirect('/register_taxistas')
 
     session['conductor_id'] = id
     return redirect('/viajes/disponibles')
 
 
-@app.route("/login_taxista",methods=['POST'])
+@app.route('/login_taxistas')
+def login_taxistas():
+    return render_template("login_taxista.html")
+
+
+@app.route('/login_taxista', methods=['POST'])
 def login_taxista():
     data = {
         "email": request.form['email'],
         "empresa": request.form['empresa']
     }
+
     conductor = Taxista.get_by_email(data)
     empresa = Taxista.get_by_empresa(data)
 

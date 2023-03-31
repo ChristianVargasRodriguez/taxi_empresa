@@ -44,7 +44,7 @@ def login_usuarios():
 
 
 @app.route("/login_usuario",methods=['POST'])
-def login():
+def login_usuario():    
     data = {
         "email": request.form['email'],
         "empresa": request.form['empresa']
