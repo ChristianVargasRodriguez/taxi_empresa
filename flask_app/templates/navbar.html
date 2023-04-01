@@ -1,74 +1,72 @@
-
-
 <nav class="navbar navbar-expand-md navbar-dark bg-dark h-4" style="height: 50px">
-    <div class="container">
-        <span class="navbar-brand ml-2 mb-0 h1"></span>
-        <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        >
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        
-            <ul class="navbar-nav ml-2 ml-md-auto">
-            <!-- <p class="text-white">{{request.path}}</p> -->
-
-                {% if not session.conductor_id %}
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <div class="dropdown">
-                            <button class="btn btn-danger">Usuario</button>
-                            <div class="dropdown-content">
-                                {% if session.usuario_id %}
-                                    <a class="text-dark" href="/todos_los_viajes">Todos los Viajes Realizados</a>
-                                <form action="/logout" method="POST">
-                                    <button class="btn btn-link text-dark">Salir</button>
-                                </form>
-                                {%else%}
-                                <a href="/login_usuarios" class="text-dark">Acceder</a>
-                                <a href="/register_usuarios" class="text-dark">Registrarte</a>
-                                
-                                {%endif%}
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                {% endif %}
-
-                {% if not session.usuario_id %}
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <div class="dropdown">
-                            <button class="btn btn-danger">Conductor</button>
-                            <div class="dropdown-content">
-                                {% if session.conductor_id %}
-                                <li class="nav-item active">
-
-                                    <a class="nav-link" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
-                                    
-                                </li>
-                                <form action="/logout" method="POST">
-                                    <button class="btn btn-link text-dark">Salir</button>
-                                </form>
-                                {%else%}
-                                <a href="/login_taxistas" class="text-dark">Acceder</a>
-                                <a href="/register_taxistas" class="text-dark">Registrarte</a>
-                                
-                                {%endif%}
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                {% endif %}
-
-
-            </ul>
-
-    </div>
-    </nav>
     
+    <a class="navbar-brand" href="/">TaxiApp</a>
+    <span class="navbar-brand ml-2 mb-0 h1"></span>
+    <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+    >
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+<ul class="navbar-nav ml-2 ml-md-auto">
+    <!-- <p class="text-white">{{request.path}}</p> -->
+    
+    {% if not session.conductor_id %}
+    <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <div class="dropdown">
+                <button class="btn btn-outline-danger">Usuario</button>
+                <div class="dropdown-content">
+                    {% if session.usuario_id %}
+                    <a class="text-dark" href="/todos_los_viajes">Todos los Viajes Realizados</a>
+                    <form action="/logout" method="POST">
+                        <button class="btn btn-link text-dark">Salir</button>
+                    </form>
+                    {%else%}
+                    <a href="/login_usuarios" class="text-dark">Acceder</a>
+                    <a href="/register_usuarios" class="text-dark">Registrarte</a>
+                    
+                    {%endif%}
+                </div>
+            </div>
+        </li>
+    </ul>
+    {% endif %}
+    
+    {% if not session.usuario_id %}
+    <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+            <div class="dropdown">
+                <button class="btn btn-outline-danger">Conductor</button>
+                <div class="dropdown-content">
+                    {% if session.conductor_id %}
+                    
+                    <a class="nav-link text-dark" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
+                    
+                    <form action="/logout" method="POST">
+                        <button class="btn btn-link text-dark">Salir</button>
+                    </form>
+                    {%else%}
+                    <a href="/login_taxistas" class="text-dark">Acceder</a>
+                    <a href="/register_taxistas" class="text-dark">Registrarte</a>
+                    
+                    {%endif%}
+                </div>
+            </div>
+        </li>
+    </ul>
+    {% endif %}
+    
+    
+</ul>
+</div>
+
+</nav>
