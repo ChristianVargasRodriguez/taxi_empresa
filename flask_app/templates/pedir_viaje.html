@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
 <h2 class="font-weight-bold"> Bienvenido/a {{usuario[0]['nombre']}} {{usuario[0]['apellido']}} !</h2>
 
 <hr class="border border-black" />
@@ -31,7 +32,7 @@
             <input type="text" name="direccion_inicio" id="direccion_inicio" class="form-control" />
         </div>
     </div>
-    
+</div>
     <!-- Direccion de Destino del Viaje -->
     <div class="form-group row">
         <label for="direccion_destino" class="col-sm-4 col-form-label">Dirección de Destino:</label>

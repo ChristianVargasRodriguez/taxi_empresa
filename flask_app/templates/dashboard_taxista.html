@@ -3,9 +3,10 @@
 {% block title %} Solicitudes {% endblock %}
 
 {% block content %}
-<h3 class="font-weight-bold">Hola {{ conductor.nombre }} {{conductor.apellido}}!!!</h3>
+<div class="container">
+<h3 class="font-weight-bold text-dark">Hola {{ conductor.nombre }} {{conductor.apellido}}!!!</h3>
 <hr>
-<h3 class="font-weight-bold">Estas son las solicitudes de Taxis en el momento:</h3>
+<h3 class="font-weight-bold text-dark">Estas son las solicitudes de Taxis en el momento:</h3>
 <hr class="border border-black border-4" />
 
 <div class="row justify-content-around">
@@ -76,5 +77,6 @@
         {% endif %}
     {% endfor %}
     </div>
+</div>
 </div>
 {% endblock %}

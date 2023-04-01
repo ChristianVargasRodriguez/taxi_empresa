@@ -3,7 +3,7 @@
 {% block title %} Editar Viaje {% endblock%} 
 
 {% block content %}
-
+<div class="container">
 <hr class="border border-black" />
 <div class="row">
     <form action="/viajes/{{ viaje[0]['id'] }}/editar" method="post" class="p-4 col-md-8 col-lg-6 my-4 mx-5 bg-dark text-light">
@@ -65,5 +65,6 @@
             </div>
         </div>
     </form>
+</div>
 </div>
 {% endblock %}
