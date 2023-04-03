@@ -78,22 +78,11 @@ class Ride:
         results = connectToMySQL(cls.db_name).query_db(query, data)
         return results
 
-###################################################################
-    @classmethod
-    def search(cls, term):
-        query = "SELECT * FROM games WHERE name LIKE %s"
-        conn = pymysql.connect(host = 'localhost',
-                                    user = 'root',
-                                    password = 'root', 
-                                    db = 'gamedb',
-                                    charset = 'utf8mb4',
-                                    cursorclass = pymysql.cursors.DictCursor,
-                                    autocommit = True)
-        cur = conn.cursor()
-        cur.execute(query, ('%' + term + '%',))
-        result_set = cur.fetchall()
-        return result_set
-###################################################################
+
+
+
+
+
     
     @classmethod
     def get_one_with_users(cls, data):
@@ -125,10 +114,10 @@ class Ride:
         return connectToMySQL(cls.db_name).query_db(query, data)
 
 
-    @classmethod
-    def destroy(cls, data):
-        query = "DELETE FROM viajes WHERE id = %(id)s;"
-        return connectToMySQL(cls.db_name).query_db(query, data)
+    # @classmethod
+    # def destroy(cls, data):
+    #     query = "DELETE FROM viajes WHERE id = %(id)s;"
+    #     return connectToMySQL(cls.db_name).query_db(query, data)
 
 
     @staticmethod

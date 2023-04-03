@@ -3,6 +3,7 @@
 {% block title %} Solicitud de viaje {% endblock %}
 
 {% block content %}
+<div class="container">
 <h2 class="font-weight-bold"> Bienvenido/a {{usuario[0]['nombre']}} {{usuario[0]['apellido']}} !</h2>
 
 <hr class="border border-black" />
@@ -22,15 +23,13 @@
             {% endif %} 
         {% endwith %}
 
-    <!-- Direccion de Inicio del Viaje -->
     <div class="form-group row">
         <label for="direccion_inicio" class="col-sm-4 col-form-label">Dirección de Inicio:</label>
         <div class="col-sm-8">
             <input type="text" name="direccion_inicio" id="direccion_inicio" class="form-control" />
         </div>
     </div>
-    
-    <!-- Direccion de Destino del Viaje -->
+
     <div class="form-group row">
         <label for="direccion_destino" class="col-sm-4 col-form-label">Dirección de Destino:</label>
         <div class="col-sm-8">
@@ -38,7 +37,6 @@
         </div>
     </div>
 
-    <!-- Detalles -->
     <div class="form-group row">
         <label for="detalles" class="col-sm-4 col-form-label">Detalles:</label>
         <div class="col-sm-8">
@@ -46,12 +44,8 @@
         </div>
     </div>
 
-    <!-- Quien Solicita el viaje (Hidden) -->
     <input hidden type="text" name="usuario_id" id="usuario_id" value={{usuario[0]['id']}} />
 
-
-
-    <!-- Submit Button -->
     <div class="form-group row">
         <div class="col-12 d-flex justify-content-end">
             <input type="submit" value="Post" class="btn btn-success px-5" />

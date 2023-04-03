@@ -77,3 +77,11 @@ ul li a {
 ul li a:hover {
     background-color: #551e30;
 }
+
+.bg-mine {
+    background-image: url('/static/img/bg-1.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+    margin-top: -20px;
+}

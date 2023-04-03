@@ -3,7 +3,7 @@
 {% block title %} Editar Viaje {% endblock%} 
 
 {% block content %}
-
+<div class="container">
 <hr class="border border-black" />
 <div class="row">
     <form action="/viajes/{{ viaje[0]['id'] }}/editar" method="post" class="p-4 col-md-8 col-lg-6 my-4 mx-5 bg-dark text-light">
@@ -21,23 +21,17 @@
             {% endif %} 
         {% endwith %}
 
-
-    
-        <!-- Viaje (Hidden) -->
         <input hidden type="text" name="viaje_id" id="viaje_id" value={{ viaje[0]['id'] }} />
 
-        <!-- Quien Solicita el viaje (Hidden) -->
         <input hidden type="text" name="usuario_id" id="usuario_id" value={{ viaje[0]['usuario_id'] }} />
 
-        <!-- Direccion de Inicio del Viaje -->
         <div class="form-group row">
             <label for="direccion_inicio" class="col-sm-4 col-form-label">Dirección de Inicio:</label>
             <div class="col-sm-8">
                 <input type="text" name="direccion_inicio" id="direccion_inicio" class="form-control" value="{{ viaje[0]['direccion_inicio'] }}"/>
             </div>
         </div>
-        
-        <!-- Direccion de Destino del Viaje -->
+
         <div class="form-group row">
             <label for="direccion_destino" class="col-sm-4 col-form-label">Dirección de Destino:</label>
             <div class="col-sm-8">
@@ -45,7 +39,6 @@
             </div>
         </div>
 
-        <!-- Detalles -->
         <div class="form-group row">
             <label for="detalles" class="col-sm-4 col-form-label">Detalles:</label>
             <div class="col-sm-8">
@@ -53,17 +46,14 @@
             </div>
         </div>
 
-
-        <!-- solicitante_id    (Hidden) -->
         <input hidden type="text" name="solicitante_id" id="solicitante_id" value={{ viaje[0]['usuario_id'] }} />
 
-
-        <!-- Submit Button -->
         <div class="form-group row">
             <div class="col-12 d-flex justify-content-end">
                 <input type="submit" value="Post" class="btn btn-success px-5" />
             </div>
         </div>
     </form>
+</div>
 </div>
 {% endblock %}

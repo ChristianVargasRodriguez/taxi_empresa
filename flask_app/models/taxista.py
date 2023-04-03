@@ -11,7 +11,6 @@ class Taxista:
         self.nombre = db_data['nombre']
         self.apellido = db_data['apellido']
         self.empresa = db_data['empresa']
-        self.es_conductor = db_data['es_conductor']
         self.email = db_data['email']
         self.password = db_data['password']
         self.created_at = db_data['created_at']
@@ -22,7 +21,7 @@ class Taxista:
     # 2.1) Create Taxista
     @classmethod
     def save(cls,data):
-        query = "INSERT INTO conductores (nombre, apellido, empresa, es_conductor, email, password, created_at, updated_at) VALUES(%(nombre)s, %(apellido)s, %(empresa)s, %(es_conductor)s, %(email)s, %(password)s, NOW(), NOW())"
+        query = "INSERT INTO conductores (nombre, apellido, empresa, email, password, created_at, updated_at) VALUES(%(nombre)s, %(apellido)s, %(empresa)s, %(email)s, %(password)s, NOW(), NOW())"
         results = connectToMySQL(cls.db_name).query_db(query,data) 
         return results
 
@@ -65,15 +64,6 @@ class Taxista:
             return False
         return Taxista(results[0])
     
-    # # 1.5) Get One User By tipo_conductor
-    @classmethod
-    def get_by_es_conductor(cls,data):
-        query = "SELECT * FROM conductores WHERE es_conductor = %(es_conductor)s;"
-        results = connectToMySQL(cls.db_name).query_db(query,data)
-        if len(results) < 1:
-            return None
-        return Taxista(results[0])
-
 
     # 3) UPDATE OPERATIONS
     # -----

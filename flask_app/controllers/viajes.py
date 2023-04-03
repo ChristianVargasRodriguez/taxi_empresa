@@ -20,7 +20,7 @@ def solicitud_viaje():
         if not is_valid:
             return redirect("/viajes/solicitud")
         viaje_id = Ride.save(request.form)
-        return redirect(f"/viaje/en_curso/{viaje_id}/") ## DEBERIA SALIR POP-UP DE "---EN ESPERA DE CONDUCTOR---" cuando el conductor acepte, enviar a la pagina
+        return redirect(f"/viaje/en_curso/{viaje_id}/") 
     return render_template("pedir_viaje.html", usuario=usuario)
 
 
@@ -60,7 +60,6 @@ def editar_viaje(viaje_id):
 
 
 
-
 @app.route("/viajes/disponibles")
 def viajes_disponibles():
     if "conductor_id" not in session:
@@ -79,7 +78,6 @@ def viajes_disponibles():
 
     return render_template("dashboard_taxista.html",conductor=conductorX, viajes=viajes, viajes_sin_conductor=viajes_sin_conductor, viajes_con_conductor=viajes_con_conductor)
 
-
 @app.route('/viajes/<int:viaje_id>/cancel_driver')
 def cancel_driver(viaje_id):
     data = {
@@ -88,13 +86,13 @@ def cancel_driver(viaje_id):
     Ride.cancel_driver(data)
     return redirect('/viajes/disponibles')
 
-@app.route("/viajes/<int:viaje_id>/delete")
-def delete_viaje(viaje_id):
-    data = {
-        "id": viaje_id,
-    }
-    Ride.destroy(data)
-    return redirect("/pedir_viaje")
+# @app.route("/viajes/<int:viaje_id>/delete")
+# def delete_viaje(viaje_id):
+#     data = {
+#         "id": viaje_id,
+#     }
+#     Ride.destroy(data)
+#     return redirect("/pedir_viaje")
 
 
 

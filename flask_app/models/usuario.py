@@ -49,6 +49,16 @@ class User:
             return False
         return results
 
+
+    @classmethod
+    def get_cargo_usuario(cls,data):
+        query = "SELECT cargo FROM usuarios WHERE id = %(id)s;"
+        results = connectToMySQL(cls.db_name).query_db(query,data)
+        if len(results) < 1:
+            return False
+        return results
+    
+    
     # 1.3) Get One User By Email
     @classmethod
     def get_by_email(cls,data):
@@ -67,15 +77,6 @@ class User:
             return False
         return User(results[0])
     
-    # 1.5) Get One User By tipo_conductor
-    # @classmethod
-    # def get_by_es_conductor(cls,data):
-    #     query = "SELECT * FROM usuarios WHERE es_conductor = %(es_conductor)s;"
-    #     results = connectToMySQL(cls.db_name).query_db(query,data)
-    #     if len(results) < 1:
-    #         return None
-    #     return User(results[0])
-
 
     # 3) UPDATE OPERATIONS
     # -----

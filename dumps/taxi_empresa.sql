@@ -17,6 +17,8 @@ USE `taxi_empresa` ;
 -- -----------------------------------------------------
 -- Table `taxi_empresa`.`usuarios`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `taxi_empresa`.`usuarios` ;
+
 CREATE TABLE IF NOT EXISTS `taxi_empresa`.`usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(255) NULL,
@@ -36,12 +38,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `taxi_empresa`.`conductores`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `taxi_empresa`.`conductores` ;
+
 CREATE TABLE IF NOT EXISTS `taxi_empresa`.`conductores` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(255) NULL,
   `apellido` VARCHAR(255) NULL,
   `empresa` VARCHAR(255) NULL,
-  `es_conductor` VARCHAR(255) NULL,
   `email` VARCHAR(255) NULL,
   `password` VARCHAR(255) NULL,
   `created_at` DATETIME NULL DEFAULT NOW(),
@@ -53,6 +56,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `taxi_empresa`.`viajes`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `taxi_empresa`.`viajes` ;
+
 CREATE TABLE IF NOT EXISTS `taxi_empresa`.`viajes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `direccion_inicio` VARCHAR(255) NULL,

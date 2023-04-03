@@ -1,12 +1,12 @@
 {% extends "base.html" %} 
 
 {% block title %}
-Acceso Taxista
+Registro Taxista
 {% endblock %}
 
 {% block content %}
-
-<h1 class="row justify-content-around" > Bienvenido Socio Conductor! </h1>
+<div class="container">
+<h1 class="row justify-content-around text-dark" > Bienvenido Socio Conductor! </h1>
 <div class="row justify-content-around pt-5 pb-4">
     <div class="col-5">
         <form action="/register_taxista" method="post" class="p-4 bg-dark text-light">
@@ -36,14 +36,6 @@ Acceso Taxista
                 <label for="empresa">Empresa:</label>
                 <input type="text" name="empresa" id="empresa" class="form-control" />
             </div>
-
-
-            <div class="form-group">
-                <input type="checkbox" id="es_conductor" name="es_conductor" value="1">
-                <label for="es_conductor"> Soy Conductor</label>
-            </div>
-
-
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="text" name="email" id="email" class="form-control" />
@@ -60,5 +52,5 @@ Acceso Taxista
         </form>
     </div>
 </div>
-
+</div>
 {% endblock %}

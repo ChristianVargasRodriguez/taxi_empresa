@@ -20,7 +20,6 @@ def register_taxista():
         "nombre": request.form["nombre"],
         "apellido": request.form["apellido"],
         "empresa": request.form["empresa"],
-        "es_conductor": 1 if request.form.getlist('es_conductor') else 0,
         "email": request.form["email"],
         "password": bcrypt.generate_password_hash(request.form["password"]),
     }
