@@ -53,4 +53,22 @@
     </div>
     </form>
 </div>
+
+<script>
+    // Initialize the autocomplete functionality using the Google Maps API
+    function initAutocomplete() {
+        const autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById('direccion_inicio'),
+            {types: ['geocode']}
+        );
+        
+        const autocomplete2 = new google.maps.places.Autocomplete(
+            document.getElementById('direccion_destino'),
+            {types: ['geocode']}
+        );
+    }
+</script>
+
+<!-- Include the Google Maps API library -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJPtD2sqK9W5zE2IhG1ia_qZ9quI9Eh6c&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
