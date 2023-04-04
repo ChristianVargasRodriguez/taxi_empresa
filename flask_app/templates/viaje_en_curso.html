@@ -4,41 +4,41 @@
 
 {% block content %}
 <div class="container">
-<div class="border border-2 border-dark p-4">
-    <div class="my-2">
-        <table class="table table-table-borderless text-left">
-            <tbody class="mx-3">
-                <tr >
-                    <td class="col-4 col-lg-2 p-0 border-0">Conductor:</td>
-                    <td class="col-4 col-lg-2 p-0 border-0"> {{ viaje[0]['conductor_nombre'] }} {{ viaje[0]['conductor_apellido'] }}</td>
-                </tr>
-                <tr >
-                    <td class="col-4 col-lg-2 p-0 border-0">Usuario Solicitante:</td>
-                    <td class="col-4 col-lg-2 p-0 border-0"> {{ viaje[0]['solicitante'] }}</td>
-                </tr>
-                <tr>
-                    <td class="col-4 col-lg-2 p-0 border-0">Dirección de Inicio: </td>
-                    <td class="col-4 col-lg-2 p-0 border-0">
-                        <a href="https://www.google.es/maps/place/{{ viaje[0]['direccion_inicio'] }}">{{ viaje[0]['direccion_inicio'] }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-4 col-lg-2 p-0 border-0"> Dirección de Destino:</td>
-                    <td class="col-4 col-lg-2 p-0 border-0">
-                        <a href="https://www.google.es/maps/place/{{ viaje[0]['direccion_destino'] }}">{{ viaje[0]['direccion_destino'] }}</a> 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-4 col-lg-2 p-0 border-0">Detalles:</td>
-                    <td class="col-4 col-lg-2 p-0 border-0">{{ viaje[0]['detalles'] }}</td>
-                </tr>
-                <tr>
-                    <td class="col-4 col-lg-2 p-0 border-0">Valor del Viaje:</td>
-                    <td class="col-4 col-lg-2 p-0 border-0">{{ viaje[0]['valor_viaje'] }}</td>
-                </tr>
-            </tbody>
-        </table>
-        {% if session.usuario_id == viaje[0]['usuario_id'] %}
+    <div class="border border-2 border-dark p-4">
+        <div class="my-2">
+            <table class="table table-table-borderless text-left">
+                <tbody class="mx-3">
+                    <tr >
+                        <td class="col-4 col-lg-2 p-0 border-0">Conductor:</td>
+                        <td class="col-4 col-lg-2 p-0 border-0"> {{ viaje[0]['conductor_nombre'] }} {{ viaje[0]['conductor_apellido'] }}</td>
+                    </tr>
+                    <tr >
+                        <td class="col-4 col-lg-2 p-0 border-0">Usuario Solicitante:</td>
+                        <td class="col-4 col-lg-2 p-0 border-0"> {{ viaje[0]['solicitante'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4 col-lg-2 p-0 border-0">Dirección de Inicio: </td>
+                        <td class="col-4 col-lg-2 p-0 border-0">
+                            <a href="https://www.google.es/maps/place/{{ viaje[0]['direccion_inicio'] }}">{{ viaje[0]['direccion_inicio'] }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-4 col-lg-2 p-0 border-0"> Dirección de Destino:</td>
+                        <td class="col-4 col-lg-2 p-0 border-0">
+                            <a href="https://www.google.es/maps/place/{{ viaje[0]['direccion_destino'] }}">{{ viaje[0]['direccion_destino'] }}</a> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-4 col-lg-2 p-0 border-0">Detalles:</td>
+                        <td class="col-4 col-lg-2 p-0 border-0">{{ viaje[0]['detalles'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="col-4 col-lg-2 p-0 border-0">Valor del Viaje:</td>
+                        <td class="col-4 col-lg-2 p-0 border-0">{{ viaje[0]['valor_viaje'] }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if session.usuario_id == viaje[0]['usuario_id'] %}
             {% if viaje[0]['valor_viaje'] == None %}
             <div class="mt-3">
                 <a href="/viajes/{{viaje[0]['id']}}/editar" class="btn btn-link p-0 mx-1"><u>Editar</u></a>
@@ -48,38 +48,120 @@
             <div class="mt-3">
                 <a href="/pedir_viaje" class="btn btn-link p-0 mx-1"><u>Pedir nuevo viaje</u></a>
             </div>
-        {% endif %}
-
-        {% endif %}
-        {% if session.conductor_id == viaje[0]['conductor_id']%}
-        <div class="mt-3">
-            {% if viaje[0]['valor_viaje'] == None %}
-            <form action="/viajes/{{viaje[0]['id']}}/valor" method="post">
-                
-                <div class="d-flex align-items-center justify-content-center">
-                    <label for="valor_viaje" class="p-2 bd-highlight ml-5">Ingresa el Valor del Viaje:</label>
-                    <input hidden type="text" name="id" id="id" value={{ viaje[0]['id'] }} />
-                    <div class="p-2 flex-fill bd-highlight">
-                        <input type="number" name="valor_viaje" id="valor_viaje" class="p-2 flex-fill bd-highlight"/>
-                        <input type="submit" value="Aceptar" class="col-2 btn btn-success" />
+            {% endif %}
+            
+            {% endif %}
+            {% if session.conductor_id == viaje[0]['conductor_id']%}
+            <div class="mt-3">
+                {% if viaje[0]['valor_viaje'] == None %}
+                <form action="/viajes/{{viaje[0]['id']}}/valor" method="post">
+                    
+                    <div class="d-flex align-items-center justify-content-center">
+                        <label for="valor_viaje" class="p-2 bd-highlight ml-5">Ingresa el Valor del Viaje:</label>
+                        <input hidden type="text" name="id" id="id" value={{ viaje[0]['id'] }} />
+                        <div class="p-2 flex-fill bd-highlight">
+                            <input type="number" name="valor_viaje" id="valor_viaje" class="p-2 flex-fill bd-highlight"/>
+                            <input type="submit" value="Aceptar" class="col-2 btn btn-success" />
+                        </div>
                     </div>
+                    
+                </form>
+                <div class="mt-3">
+                    <a href="/viajes/{{viaje[0]['id']}}/cancel_driver" class="btn btn-link p-0 mx-1"><u>Cancelar mi conducción</u></a>
                 </div>
-
-            </form>
-            <div class="mt-3">
-                <a href="/viajes/{{viaje[0]['id']}}/cancel_driver" class="btn btn-link p-0 mx-1"><u>Cancelar mi conducción</u></a>
+                {% endif %}
+                
+                {% if viaje[0]['valor_viaje'] != None %}
+                <div>
+                    <div class="mt-3">
+                        <a href="/viajes/disponibles" class="btn btn-link p-0 mx-1"><u>Buscar viaje</u></a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
-
-            {% if viaje[0]['valor_viaje'] != None %}
-        <div>
-            <div class="mt-3">
-                <a href="/viajes/disponibles" class="btn btn-link p-0 mx-1"><u>Buscar viaje</u></a>
-            </div>
-            {% endif %}
-        {% endif %}
         </div>
     </div>
-</div>
-</div>
+
+    <div id="map" style="height: 400px;"></div>
+
+    <script>
+        // Initialize the map
+        function initMap() {
+            // Get the addresses from the viaje object
+            var startAddress = "{{ viaje[0]['direccion_inicio'] }}";
+            var endAddress = "{{ viaje[0]['direccion_destino'] }}";
+    
+            // Create a geocoder object to convert addresses to coordinates
+            var geocoder = new google.maps.Geocoder();
+    
+            // Convert the start address to coordinates
+            geocoder.geocode({'address': startAddress}, function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    var startLocation = results[0].geometry.location;
+    
+                    // Convert the end address to coordinates
+                    geocoder.geocode({'address': endAddress}, function(results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            var endLocation = results[0].geometry.location;
+    
+                            // Create a map centered between the start and end locations
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                center: {lat: (startLocation.lat() + endLocation.lat()) / 2, lng: (startLocation.lng() + endLocation.lng()) / 2},
+                                zoom: 10
+                            });
+    
+                            // Add markers for the start and end locations
+                            var startMarker = new google.maps.Marker({
+                                position: startLocation,
+                                map: map,
+                                title: 'Start Location'
+                            });
+    
+                            var endMarker = new google.maps.Marker({
+                                position: endLocation,
+                                map: map,
+                                title: 'End Location'
+                            });
+    
+                            // Get the directions between the start and end locations
+                            var directionsService = new google.maps.DirectionsService();
+                            var directionsRenderer = new google.maps.DirectionsRenderer({
+                                map: map,
+                                suppressMarkers: true,
+                                preserveViewport: true
+                            });
+    
+                            directionsService.route({
+                                origin: startLocation,
+                                destination: endLocation,
+                                travelMode: 'DRIVING'
+                            }, function(response, status) {
+                                if (status === 'OK') {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            });
+    
+                        } else {
+                            alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    
+        // Load the Google Maps API and call the initMap function
+        function initAutocomplete() {
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap';
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
 {% endblock %}
