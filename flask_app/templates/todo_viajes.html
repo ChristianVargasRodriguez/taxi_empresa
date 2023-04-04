@@ -16,7 +16,7 @@
                 <th class="col-1">Fecha de Creación</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tablaViajes">
                 {% for viaje in todo_viajes %}
             <tr>
                 <td class="col-2">{{ viaje.solicitante }}</td>
@@ -28,10 +28,46 @@
                 <td class="col-1">{{ viaje.created_at }}</td>
             </tr>
                 {% endfor %}
-
+            <tr>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2">Total:</td>
+                <td class="col-1" id="sumatoria"></td>
+                <td class="col-1 fecha_viaje"></td>
+            </tr>
         </tbody>
+        {% if session.cargo == "administrador" %}
+        <button onclick="exportTableToExcel('tableID', 'tableID')">Descargar Excel</button>
+        {% endif %}
     </table>
 </div>
 
 
+
+<script>
+    // Obtiene la tabla y sus filas
+    var table = document.getElementById("tableID");
+    var rows = table.getElementsByTagName("tr");
+
+    // Variable para almacenar la suma
+    var sumatoria = 0;
+
+    // Recorre las filas de la tabla y suma los valores de la sexta columna
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var cols = row.getElementsByTagName("td");
+        if (cols.length > 5) {
+            var valorViaje = parseFloat(cols[5].innerHTML);
+            if (!isNaN(valorViaje)) {
+                sumatoria += valorViaje;
+            }
+        }
+    }
+    
+    // Actualiza la celda de la sumatoria con el valor calculado
+    document.getElementById("sumatoria").innerHTML = sumatoria.toFixed(0);
+
+</script>
 {% endblock %}

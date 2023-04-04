@@ -10,7 +10,9 @@
                 <tbody class="mx-3">
                     <tr >
                         <td class="col-4 col-lg-2 p-0 border-0">Conductor:</td>
-                        <td class="col-4 col-lg-2 p-0 border-0"> {{ viaje[0]['conductor_nombre'] }} {{ viaje[0]['conductor_apellido'] }}</td>
+                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['conductor_nombre'] == None %} Sin conductor designado {% else %} 
+                            {{ viaje[0]['conductor_nombre'] }} {{ viaje[0]['conductor_apellido'] }} {% endif %}
+                        </td>
                     </tr>
                     <tr >
                         <td class="col-4 col-lg-2 p-0 border-0">Usuario Solicitante:</td>
@@ -34,7 +36,9 @@
                     </tr>
                     <tr>
                         <td class="col-4 col-lg-2 p-0 border-0">Valor del Viaje:</td>
-                        <td class="col-4 col-lg-2 p-0 border-0">{{ viaje[0]['valor_viaje'] }}</td>
+                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['valor_viaje'] == None %} - {% else %} 
+                            {{ viaje[0]['valor_viaje'] }} {% endif %}
+                        </td>
                     </tr>
                 </tbody>
             </table>

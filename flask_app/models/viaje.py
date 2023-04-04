@@ -114,12 +114,6 @@ class Ride:
         return connectToMySQL(cls.db_name).query_db(query, data)
 
 
-    # @classmethod
-    # def destroy(cls, data):
-    #     query = "DELETE FROM viajes WHERE id = %(id)s;"
-    #     return connectToMySQL(cls.db_name).query_db(query, data)
-
-
     @staticmethod
     def validate_ride(ride,type):
         is_valid = True

@@ -63,6 +63,7 @@ def login_usuario():
         return redirect("/")
     
     session['usuario_id'] = usuario.id
+    session['cargo'] = usuario.cargo
     return redirect('/pedir_viaje')
 
 

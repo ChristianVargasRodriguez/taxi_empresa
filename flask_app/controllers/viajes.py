@@ -86,15 +86,6 @@ def cancel_driver(viaje_id):
     Ride.cancel_driver(data)
     return redirect('/viajes/disponibles')
 
-# @app.route("/viajes/<int:viaje_id>/delete")
-# def delete_viaje(viaje_id):
-#     data = {
-#         "id": viaje_id,
-#     }
-#     Ride.destroy(data)
-#     return redirect("/pedir_viaje")
-
-
 
 @app.route('/viajes/<int:viaje_id>/valor', methods=['GET','POST'])
 def editar_valor_viaje(viaje_id):
