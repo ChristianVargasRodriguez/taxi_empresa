@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <table class="table table-dark">
+    <table class="table table-dark table-export" id="tableID" >
         <thead>
             <tr>
                 <th class="col-2">Solicitante</th>
@@ -24,7 +24,7 @@
                 <td class="col-2">{{ viaje.direccion_inicio }}</td>
                 <td class="col-2">{{ viaje.direccion_destino }}</td>
                 <td class="col-2">{{ viaje.detalles }}</td>
-                <td class="col-1">{{ viaje.valor_viaje }}</td>
+                <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
                 <td class="col-1">{{ viaje.created_at }}</td>
             </tr>
                 {% endfor %}
@@ -43,7 +43,10 @@
         {% endif %}
     </table>
 </div>
-
+<br> 
+<br> 
+<br> 
+<br> 
 
 
 <script>
@@ -68,6 +71,7 @@
     
     // Actualiza la celda de la sumatoria con el valor calculado
     document.getElementById("sumatoria").innerHTML = sumatoria.toFixed(0);
+
 
 </script>
 {% endblock %}
