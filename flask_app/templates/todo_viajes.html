@@ -36,7 +36,7 @@
                 {% for viaje in todo_viajes %}
             <tr>
                 <td class="col-2">{{ viaje.solicitante }}</td>
-                <td class="col-2">{{ viaje.conductor_nombre }} {{ viaje.conductor_apellido }}</td>
+                <td class="col-2">{% if viaje.conductor_nombre == None %} Sin Conductor Desitgnado {% else %} {{ viaje.conductor_nombre }} {{ viaje.conductor_apellido }} {% endif %}</td>
                 <td class="col-2">{{ viaje.direccion_inicio }}</td>
                 <td class="col-2">{{ viaje.direccion_destino }}</td>
                 <td class="col-2">{{ viaje.detalles }}</td>
