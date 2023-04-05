@@ -3,7 +3,8 @@ from flask_app import app
 from flask_app.models.taxista import Taxista
 from flask_app.models.usuario import User
 from flask_app.models.viaje import Ride
-
+from datetime import datetime
+import locale
 
 
 @app.route("/viajes/solicitud", methods=["GET", "POST"])
@@ -109,11 +110,108 @@ def todos_los_viajes():
         else:
             todo_viajes = Ride.get_by_usuario(usuario_id)
         
-        return render_template("todo_viajes.html", todo_viajes=todo_viajes)
-    
+        # Obtener la fecha actual
+        fecha_actual = datetime.now().date()
+
+        # Configurar el idioma de destino en español Chile
+        locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
+
+        viajes_del_dia = []
+
+        for viaje in todo_viajes:
+            # Obtener la fecha del viaje
+            fecha_viaje = datetime.strptime(viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S.%f'), '%Y-%m-%d %H:%M:%S.%f').date()
+            fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
+            viaje["created_at"] = fecha_formateada
+            
+            if viaje['valor_viaje'] is not None:
+                viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
+            else: 
+                viaje['valor_viaje'] = 0
+                
+            # Comparar la fecha del viaje con la fecha actual
+            if fecha_viaje == fecha_actual:
+                viajes_del_dia.append(viaje)
+
+        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia)
+
     if "conductor_id" in session:
         conductor_id = session.get("conductor_id")
         data = {"id": conductor_id}
         todo_viajes = Ride.get_by_conductor(conductor_id)
 
-        return render_template("todo_viajes.html", todo_viajes=todo_viajes)
+        # Obtener la fecha actual
+        fecha_actual = datetime.now().date()
+
+        # Configurar el idioma de destino en español
+        locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
+
+        viajes_del_dia = []
+
+        for viaje in todo_viajes:
+            # Obtener la fecha del viaje
+            fecha_viaje = datetime.strptime(viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S.%f'), '%Y-%m-%d %H:%M:%S.%f').date()
+            fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
+            viaje["created_at"] = fecha_formateada
+            
+            if viaje['valor_viaje'] is not None:
+                viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
+            else: 
+                viaje['valor_viaje'] = 0
+                
+            if fecha_viaje == fecha_actual:
+                viajes_del_dia.append(viaje)
+
+        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia)
+
+
+@app.route('/filtrar_viajes', methods = ['POST'])
+def filtrar_viajes():
+
+    if "usuario_id" in session:
+        usuario_id = session.get("usuario_id")
+        data = { "id": usuario_id }
+
+        cargo = User.get_cargo_usuario(data)
+        cargo = cargo[0]["cargo"]
+
+        if cargo == "administrador":
+            todo_viajes = Ride.get_all()
+        elif cargo == "coordinador":
+            todo_viajes = Ride.get_by_usuario(usuario_id)
+        else:
+            todo_viajes = Ride.get_by_usuario(usuario_id)
+
+        # Configurar el idioma de destino en español Chile
+        locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
+
+        viajes_filtrados = []
+        for viaje in todo_viajes:
+            
+            fecha_inicio_str = request.form['fecha_inicio']
+            fecha_inicio = datetime.strptime(fecha_inicio_str, '%Y-%m-%d').date()
+            fechaInicio = datetime.combine(fecha_inicio, datetime.min.time())
+            
+            fecha_fin_str = request.form['fecha_fin']
+            fecha_fin = datetime.strptime(fecha_fin_str, '%Y-%m-%d').date()
+            fechaFin = datetime.combine(fecha_fin, datetime.min.time())
+
+            # Obtener la fecha y hora del viaje
+            fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
+            fecha_viaje = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
+
+            # Comparar las fechas
+            if (fechaInicio <= fecha_viaje and fecha_viaje <= fechaFin):
+                
+                fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
+                viaje["created_at"] = fecha_formateada
+                
+                
+                if viaje['valor_viaje'] is not None:
+                    viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
+                else: 
+                    viaje['valor_viaje'] = 0
+                
+                
+                viajes_filtrados.append(viaje)
+        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados)

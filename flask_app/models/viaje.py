@@ -79,11 +79,6 @@ class Ride:
         return results
 
 
-
-
-
-
-    
     @classmethod
     def get_one_with_users(cls, data):
         query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
@@ -95,12 +90,13 @@ class Ride:
     def editar_viaje(cls, data):
         query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(viaje_id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
-    
+
+
     @classmethod
     def update_valor_viaje(cls, data):
         query = "UPDATE viajes SET valor_viaje=%(valor_viaje)s WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
-    
+
 
     @classmethod
     def add_driver(cls, data):

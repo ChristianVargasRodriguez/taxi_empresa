@@ -4,6 +4,22 @@
 
 {% block content %}
 <div class="container">
+    {% if session.cargo == "administrador" %}
+    <form action="/filtrar_viajes" method="post" id="filtroForm">
+        <div>
+            <label> Filtrar por fechas: </label>
+            <div>
+                <label for="fecha_inicio">Fecha de inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio">
+
+                <label for="fecha_fin">Fecha de fin:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin">
+
+                <button type="submit">Filtrar</button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
     <table class="table table-dark table-export" id="tableID" >
         <thead>
             <tr>
@@ -25,7 +41,7 @@
                 <td class="col-2">{{ viaje.direccion_destino }}</td>
                 <td class="col-2">{{ viaje.detalles }}</td>
                 <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
-                <td class="col-1">{{ viaje.created_at }}</td>
+                <td class="col-1">{{ viaje.created_at }} </td>
             </tr>
                 {% endfor %}
             <tr>
@@ -35,19 +51,20 @@
                 <td class="col-2"></td>
                 <td class="col-2">Total:</td>
                 <td class="col-1" id="sumatoria"></td>
-                <td class="col-1 fecha_viaje"></td>
+                <td class="col-1"></td>
             </tr>
+
         </tbody>
         {% if session.cargo == "administrador" %}
         <button onclick="exportTableToExcel('tableID', 'tableID')">Descargar Excel</button>
         {% endif %}
     </table>
 </div>
-<br> 
-<br> 
-<br> 
-<br> 
 
+<br> 
+<br> 
+<br> 
+<br>
 
 <script>
     // Obtiene la tabla y sus filas
@@ -62,15 +79,17 @@
         var row = rows[i];
         var cols = row.getElementsByTagName("td");
         if (cols.length > 5) {
-            var valorViaje = parseFloat(cols[5].innerHTML);
+            
+            var valorViajeStr = cols[5].innerHTML.replace('.', '').replace(',', '.');
+            var valorViaje = parseFloat(valorViajeStr);
             if (!isNaN(valorViaje)) {
                 sumatoria += valorViaje;
             }
         }
     }
-    
     // Actualiza la celda de la sumatoria con el valor calculado
-    document.getElementById("sumatoria").innerHTML = sumatoria.toFixed(0);
+    var sumatoriaStr = sumatoria.toLocaleString('es-CL', { minimumFractionDigits: 0 });
+    document.getElementById("sumatoria").innerHTML = sumatoriaStr;
 
 
 </script>
