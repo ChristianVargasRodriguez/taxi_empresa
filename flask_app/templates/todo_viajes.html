@@ -29,10 +29,19 @@
                 <th class="col-2">Dirección Destino</th>
                 <th class="col-2">Detalles</th>
                 <th class="col-1">Valor Viaje</th>
-                <th class="col-1">Fecha de Creación</th>
+                <th class="col-1">{% if request.path == '/todos_los_viajes'%} Viajes de hoy {% else %} Viajes filtrados por fechas {% endif %}</th>
             </tr>
         </thead>
         <tbody id="tablaViajes">
+            
+
+
+            {% if todo_viajes|length == 0 %}
+            <tr>
+                <td colspan="7">Aún no hay viajes en taxi realizados hoy.</td>
+            </tr>
+            {% else %}
+
                 {% for viaje in todo_viajes %}
             <tr>
                 <td class="col-2">{{ viaje.solicitante }}</td>
@@ -43,7 +52,7 @@
                 <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
                 <td class="col-1">{{ viaje.created_at }} </td>
             </tr>
-                {% endfor %}
+            
             <tr>
                 <td class="col-2"></td>
                 <td class="col-2"></td>
@@ -53,7 +62,9 @@
                 <td class="col-1" id="sumatoria"></td>
                 <td class="col-1"></td>
             </tr>
-
+                {% endfor %}
+            {% endif %}
+            
         </tbody>
         {% if session.cargo == "administrador" %}
         <button onclick="exportTableToExcel('tableID', 'tableID')">Descargar Excel</button>
