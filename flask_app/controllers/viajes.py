@@ -215,3 +215,13 @@ def filtrar_viajes():
                 
                 viajes_filtrados.append(viaje)
         return render_template("todo_viajes.html", todo_viajes=viajes_filtrados)
+
+
+
+
+@app.route("/ultimo_viaje/<int:usuario_id>/")
+def ultimo_viaje_usuario (usuario_id):
+    data = {"usuario_id": usuario_id}
+    ultimo_viaje = Ride.buscar_ultimo_viaje_de_usuario(data)
+    viaje_id = ultimo_viaje["viaje_id"]
+    return render_template("viaje_en_curso.html", viaje=ultimo_viaje, viaje_id=viaje_id) 

@@ -121,3 +121,12 @@ class Ride:
             flash("Direccion de destino debe contener al menos 8 caracteres.","ride")
         return is_valid
     
+    
+    
+
+    @classmethod
+    def buscar_ultimo_viaje_de_usuario(cls, usuario_id):
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.usuario_id = %(usuario_id)s ORDER BY created_at DESC LIMIT 1;"
+        data = { "usuario_id": usuario_id }
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        return results
