@@ -25,6 +25,7 @@
                 <button class="btn btn-outline-danger" id="cuenta-btn">Cuenta</button>
                 <div class="dropdown-content">
                     {% if session.usuario_id %}
+                    <a class="text-dark" href="/pedir_viaje">Pedir Viaje</a>
                     <a class="text-dark" href="/todos_los_viajes">Todos los Viajes Realizados</a>
                     <form action="/logout" method="POST">
                         <button class="btn btn-link text-dark">Salir</button>

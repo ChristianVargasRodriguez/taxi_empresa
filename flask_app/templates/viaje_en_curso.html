@@ -84,10 +84,11 @@
                     {% endif %}
                 </div>
             </div>
+            <div id="map" style="height: 400px;"></div>
         </div>
+        
     </div>
 
-    <div id="map" style="height: 400px;"></div>
 
     <script>
         // Initialize the map
@@ -143,6 +144,19 @@
                             }, function(response, status) {
                                 if (status === 'OK') {
                                     directionsRenderer.setDirections(response);
+                                    // Zoom in on the route
+                                    var bounds = new google.maps.LatLngBounds();
+                                    var legs = response.routes[0].legs;
+                                    for (var i = 0; i < legs.length; i++) {
+                                        var steps = legs[i].steps;
+                                        for (var j = 0; j < steps.length; j++) {
+                                            var path = steps[j].path;
+                                            for (var k = 0; k < path.length; k++) {
+                                                bounds.extend(path[k]);
+                                            }
+                                        }
+                                    }
+                                    map.fitBounds(bounds);
                                 } else {
                                     window.alert('Directions request failed due to ' + status);
                                 }
