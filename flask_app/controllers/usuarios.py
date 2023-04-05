@@ -17,7 +17,7 @@ def register_usuarios():
 def register():
     is_valid = User.validate_user(request.form)
     if not is_valid:
-        return redirect("/")
+        return redirect("/register_usuarios")
     
     new_user = {
         "nombre": request.form["nombre"],
@@ -32,7 +32,7 @@ def register():
     id = User.save(new_user)
     if not id:
         flash("Email ya existe.","register")
-        return redirect('/')
+        return redirect('/register_usuarios')
     
     session['usuario_id'] = id
     return redirect('/pedir_viaje')
@@ -54,13 +54,13 @@ def login_usuario():
 
     if not usuario:
         flash("Email, Empresa y/o Password Invalido","login")
-        return redirect("/")
+        return redirect("/login_usuarios")
     if not empresa:
         flash("Email, Empresa y/o Password Invalido","login")
-        return redirect("/")
+        return redirect("/login_usuarios")
     if not bcrypt.check_password_hash(usuario.password,request.form['password']):
         flash("Email, Empresa y/o Password Invalido","login")
-        return redirect("/")
+        return redirect("/login_usuarios")
     
     session['usuario_id'] = usuario.id
     session['cargo'] = usuario.cargo
@@ -70,7 +70,7 @@ def login_usuario():
 @app.route('/pedir_viaje')
 def pedir_viaje():
     if 'usuario_id' not in session:
-        return redirect('/')
+        return redirect('/login_usuarios')
     data = {"id": session["usuario_id"]}
     usuario = User.get_one_usuario(data)
     return render_template("pedir_viaje.html", usuario=usuario)
