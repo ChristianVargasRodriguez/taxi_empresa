@@ -79,11 +79,6 @@ class Ride:
         return results
 
 
-
-
-
-
-    
     @classmethod
     def get_one_with_users(cls, data):
         query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
@@ -95,12 +90,13 @@ class Ride:
     def editar_viaje(cls, data):
         query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(viaje_id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
-    
+
+
     @classmethod
     def update_valor_viaje(cls, data):
         query = "UPDATE viajes SET valor_viaje=%(valor_viaje)s WHERE id = %(id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
-    
+
 
     @classmethod
     def add_driver(cls, data):
@@ -125,3 +121,12 @@ class Ride:
             flash("Direccion de destino debe contener al menos 8 caracteres.","ride")
         return is_valid
     
+    
+    
+
+    @classmethod
+    def buscar_ultimo_viaje_de_usuario(cls, usuario_id):
+        query = "SELECT viajes.id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.usuario_id = %(usuario_id)s ORDER BY created_at DESC LIMIT 1;"
+        data = { "usuario_id": usuario_id }
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        return results

@@ -10,7 +10,7 @@
                 <tbody class="mx-3">
                     <tr >
                         <td class="col-4 col-lg-2 p-0 border-0">Conductor:</td>
-                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['conductor_nombre'] == None %} Sin conductor designado {% else %} 
+                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['conductor_nombre'] == None %} <i>Sin conductor designado</i> {% else %} 
                             {{ viaje[0]['conductor_nombre'] }} {{ viaje[0]['conductor_apellido'] }} {% endif %}
                         </td>
                     </tr>
@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <td class="col-4 col-lg-2 p-0 border-0">Valor del Viaje:</td>
-                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['valor_viaje'] == None %} - {% else %} 
+                        <td class="col-4 col-lg-2 p-0 border-0"> {% if viaje[0]['valor_viaje'] == None %}  <i>Precio por confirmar</i> {% else %} 
                             {{ viaje[0]['valor_viaje'] }} {% endif %}
                         </td>
                     </tr>
@@ -80,8 +80,8 @@
                     <div class="mt-3">
                         <a href="/viajes/disponibles" class="btn btn-link p-0 mx-1"><u>Buscar viaje</u></a>
                     </div>
-                    {% endif %}
-                    {% endif %}
+                {% endif %}
+            {% endif %}
                 </div>
             </div>
             <div id="map" style="height: 400px;"></div>

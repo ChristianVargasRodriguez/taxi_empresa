@@ -26,12 +26,12 @@
                 <div class="dropdown-content">
                     {% if session.usuario_id %}
                     <a class="text-dark" href="/pedir_viaje">Pedir Viaje</a>
-                    <a class="text-dark" href="/todos_los_viajes">Todos los Viajes Realizados</a>
+                    <a class="text-dark" href="/todos_los_viajes">Tabla de Viajes</a>
                     <form action="/logout" method="POST">
                         <button class="btn btn-link text-dark">Salir</button>
                     </form>
                     {% elif session.conductor_id %}
-                    <a class="nav-link text-dark" href="/todos_los_viajes"><u>Todos los Viajes Realizados</u></a>
+                    <a class="nav-link text-dark" href="/todos_los_viajes"><u>Tabla de Viajes</u></a>
                     <form action="/logout" method="POST">
                         <button class="btn btn-link text-dark">Salir</button>
                     </form>
