@@ -2,6 +2,8 @@ from flask import render_template, request, redirect, session, flash
 from flask_bcrypt import Bcrypt
 from flask_app import app
 from flask_app.models.usuario import User
+import datetime
+import pytz
 
 bcrypt = Bcrypt(app)
 
@@ -64,8 +66,27 @@ def login_usuario():
     
     session['usuario_id'] = usuario.id
     session['cargo'] = usuario.cargo
-    return redirect('/pedir_viaje')
-
+    cargo = usuario.cargo
+    
+    if cargo == "administrador":
+        return redirect('/pedir_viaje')
+    else:
+        # establecer la zona horaria de Chile
+        tz = pytz.timezone('America/Santiago')
+        
+        # obtener la hora actual
+        now = datetime.datetime.now(tz).time()
+        
+        # definir las horas permitidas
+        start_time = datetime.time(hour=7, minute=0)
+        end_time = datetime.time(hour=19, minute=0)
+        
+        # comprobar si la hora actual está dentro del rango permitido
+        if now >= start_time and now <= end_time:
+            return redirect('/pedir_viaje')
+        else:
+            flash("No puedes ingresar fuera del horario (Horario de acceso: 07:00 ~ 19:00 hrs)","login")
+            return redirect("/login_usuarios")
 
 @app.route('/pedir_viaje')
 def pedir_viaje():
