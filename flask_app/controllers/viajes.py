@@ -223,5 +223,5 @@ def filtrar_viajes():
 def ultimo_viaje_usuario (usuario_id):
     data = {"usuario_id": usuario_id}
     ultimo_viaje = Ride.buscar_ultimo_viaje_de_usuario(data)
-    viaje_id = ultimo_viaje["viaje_id"]
+    viaje_id = ultimo_viaje[0]["viaje_id"]
     return render_template("viaje_en_curso.html", viaje=ultimo_viaje, viaje_id=viaje_id) 
