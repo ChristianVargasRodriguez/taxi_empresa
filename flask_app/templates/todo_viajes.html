@@ -52,7 +52,7 @@
                 <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
                 <td class="col-1">{{ viaje.created_at }} </td>
             </tr>
-            
+                {% endfor %}
             <tr>
                 <td class="col-2"></td>
                 <td class="col-2"></td>
@@ -62,7 +62,7 @@
                 <td class="col-1" id="sumatoria"></td>
                 <td class="col-1"></td>
             </tr>
-                {% endfor %}
+                
             {% endif %}
             
         </tbody>
