@@ -1,3 +1,4 @@
+import time
 from flask import render_template, request, redirect, session, flash
 from flask_app import app
 from flask_app.models.taxista import Taxista
@@ -111,7 +112,11 @@ def todos_los_viajes():
             todo_viajes = Ride.get_by_usuario(usuario_id)
         
         # Obtener la fecha actual
-        fecha_actual = datetime.now().date()
+        fecha_actual = datetime.now()
+        
+        # Obtener el inicio y fin del día actual
+        inicio_dia_actual = fecha_actual.replace(hour=0, minute=0, second=0, microsecond=0)
+        fin_dia_actual = fecha_actual.replace(hour=23, minute=59, second=59, microsecond=999999)
 
         # Configurar el idioma de destino en español Chile
         locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
@@ -120,7 +125,9 @@ def todos_los_viajes():
 
         for viaje in todo_viajes:
             # Obtener la fecha del viaje
-            fecha_viaje = datetime.strptime(viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S.%f'), '%Y-%m-%d %H:%M:%S.%f').date()
+            fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
+            fecha_viaje = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
+            
             fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
             viaje["created_at"] = fecha_formateada
             
@@ -129,8 +136,8 @@ def todos_los_viajes():
             else: 
                 viaje['valor_viaje'] = 0
                 
-            # Comparar la fecha del viaje con la fecha actual
-            if fecha_viaje == fecha_actual:
+            # Verificar si el viaje está dentro del día actual
+            if inicio_dia_actual <= fecha_viaje <= fin_dia_actual:
                 viajes_del_dia.append(viaje)
 
         return render_template("todo_viajes.html", todo_viajes=viajes_del_dia)
@@ -141,7 +148,11 @@ def todos_los_viajes():
         todo_viajes = Ride.get_by_conductor(conductor_id)
 
         # Obtener la fecha actual
-        fecha_actual = datetime.now().date()
+        fecha_actual = datetime.now()
+
+        # Obtener el inicio y fin del día actual
+        inicio_dia_actual = fecha_actual.replace(hour=0, minute=0, second=0, microsecond=0)
+        fin_dia_actual = fecha_actual.replace(hour=23, minute=59, second=59, microsecond=999999)
 
         # Configurar el idioma de destino en español
         locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
@@ -150,7 +161,9 @@ def todos_los_viajes():
 
         for viaje in todo_viajes:
             # Obtener la fecha del viaje
-            fecha_viaje = datetime.strptime(viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S.%f'), '%Y-%m-%d %H:%M:%S.%f').date()
+            fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
+            fecha_viaje = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
+            
             fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
             viaje["created_at"] = fecha_formateada
             
@@ -159,7 +172,8 @@ def todos_los_viajes():
             else: 
                 viaje['valor_viaje'] = 0
                 
-            if fecha_viaje == fecha_actual:
+            # Verificar si el viaje está dentro del día actual
+            if inicio_dia_actual <= fecha_viaje <= fin_dia_actual:
                 viajes_del_dia.append(viaje)
 
         return render_template("todo_viajes.html", todo_viajes=viajes_del_dia)
@@ -194,7 +208,7 @@ def filtrar_viajes():
             
             fecha_fin_str = request.form['fecha_fin']
             fecha_fin = datetime.strptime(fecha_fin_str, '%Y-%m-%d').date()
-            fechaFin = datetime.combine(fecha_fin, datetime.min.time())
+            fechaFin = datetime.combine(fecha_fin, datetime.min.time()).replace(hour=23, minute=59)
 
             # Obtener la fecha y hora del viaje
             fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
