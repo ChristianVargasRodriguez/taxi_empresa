@@ -39,6 +39,9 @@ def add_driver(viaje_id, conductor_id):
 def details_ride(viaje_id):
     data = {"id": viaje_id}
     viaje_actual = Ride.get_one_with_users(data)
+    locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
+    if viaje_actual[0]['valor_viaje'] is not None:
+        viaje_actual[0]['valor_viaje'] = locale.currency(viaje_actual[0]['valor_viaje'], grouping=True, symbol=False, international=False)
     return render_template("viaje_en_curso.html", viaje=viaje_actual) 
 
 
