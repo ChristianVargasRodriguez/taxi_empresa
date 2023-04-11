@@ -14,7 +14,7 @@ class Ride:
         self.detalles = db_data["detalles"] if db_data["detalles"] else None
         self.usuario_id = db_data["usuario_id"]
         self.conductor_id = db_data["conductor_id"] if db_data["conductor_id"] else None
-        self.valor_viaje = db_data["valor_viaje"] if db_data["valor_viaje"] else None
+        self.valor_viaje = db_data["valor_viaje"] if (db_data["valor_viaje"] is not None) else None
         self.created_at = db_data["created_at"]
         self.updated_at = db_data["updated_at"]
 
@@ -81,7 +81,7 @@ class Ride:
 
     @classmethod
     def get_one_with_users(cls, data):
-        query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
+        query =  "SELECT viajes.id, viajes.usuario_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.conductor_id, viajes.created_at, viajes.updated_at, viajes.valor_viaje, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono AS telefono_usuario, conductor.nombre AS conductor_nombre, conductor.apellido AS conductor_apellido FROM viajes LEFT JOIN usuarios as usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores as conductor ON conductor.id = viajes.conductor_id WHERE viajes.id= %(id)s ;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         return results
 
@@ -89,6 +89,11 @@ class Ride:
     @classmethod
     def editar_viaje(cls, data):
         query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s WHERE id = %(viaje_id)s;"
+        return connectToMySQL(cls.db_name).query_db(query, data)
+    
+    @classmethod
+    def cancelar_viaje(cls, data):
+        query = "UPDATE viajes SET direccion_inicio=%(direccion_inicio)s, direccion_destino=%(direccion_destino)s, detalles=%(detalles)s, valor_viaje=%(valor_viaje)s WHERE id = %(viaje_id)s;"
         return connectToMySQL(cls.db_name).query_db(query, data)
 
 
@@ -121,11 +126,17 @@ class Ride:
             flash("Direccion de destino debe contener al menos 8 caracteres.","ride")
         return is_valid
     
-    
+    @staticmethod
+    def detalle_viaje(ride,type):
+        is_valid = True
+        if len(ride['detalles']) < 10:
+            is_valid = False
+            flash("Comentario debe tener al menos 10 caracteres.","ride")
+        return is_valid
     
 
     @classmethod
     def buscar_ultimo_viaje_de_usuario(cls, data):
-        query = "SELECT viajes.id AS viaje_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.usuario_id = %(usuario_id)s ORDER BY created_at DESC LIMIT 1;"
+        query = "SELECT viajes.id AS viaje_id, viajes.direccion_inicio, viajes.direccion_destino, viajes.detalles, viajes.usuario_id, viajes.conductor_id, viajes.valor_viaje, viajes.created_at, viajes.updated_at, CONCAT(usuarios.nombre, ' ', usuarios.apellido) AS solicitante, usuarios.telefono AS telefono_usuario, usuarios.email AS usuario_email, conductores.id, conductores.nombre AS conductor_nombre, conductores.apellido AS conductor_apellido, conductores.email AS conductor_email FROM viajes LEFT JOIN usuarios ON usuarios.id = viajes.usuario_id LEFT JOIN conductores ON conductores.id = viajes.conductor_id WHERE viajes.usuario_id = %(usuario_id)s ORDER BY created_at DESC LIMIT 1;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         return results

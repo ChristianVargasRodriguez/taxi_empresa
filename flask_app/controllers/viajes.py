@@ -69,16 +69,18 @@ def viajes_disponibles():
     data = {"id": session["conductor_id"]}
     conductorX = Taxista.get_one_taxista(data)
     viajes = Ride.get_all_para_conductor()
-
+    
     viajes_sin_conductor = []
     viajes_con_conductor = []
     for r in viajes:
-        if(r.conductor_id == None):
-            viajes_sin_conductor.append(r)
-        else:
-            viajes_con_conductor.append(r)
+        if r.valor_viaje is None and r.valor_viaje != 0:
+            print(r.valor_viaje)
+            if r.conductor_id is None:
+                viajes_sin_conductor.append(r)
+            else:
+                viajes_con_conductor.append(r)
 
-    return render_template("dashboard_taxista.html",conductor=conductorX, viajes=viajes, viajes_sin_conductor=viajes_sin_conductor, viajes_con_conductor=viajes_con_conductor)
+    return render_template("dashboard_taxista.html",conductor=conductorX, viajes_sin_conductor=viajes_sin_conductor, viajes_con_conductor=viajes_con_conductor)
 
 @app.route('/viajes/<int:viaje_id>/cancel_driver')
 def cancel_driver(viaje_id):
@@ -239,3 +241,24 @@ def ultimo_viaje_usuario (usuario_id):
     ultimo_viaje = Ride.buscar_ultimo_viaje_de_usuario(data)
     viaje_id = ultimo_viaje[0]["viaje_id"]
     return render_template("viaje_en_curso.html", viaje=ultimo_viaje, viaje_id=viaje_id) 
+
+
+
+@app.route('/viajes/<int:viaje_id>/cancelar_viaje', methods=['GET','POST'])
+def cancelar_viaje(viaje_id):
+    # POST REQUEST 
+    if request.method == 'POST':
+        if not Ride.detalle_viaje(request.form, "edit"):
+            return redirect(f"/viajes/{viaje_id}/cancelar_viaje")
+        Ride.cancelar_viaje(request.form)
+        
+        return redirect(f"/viaje/en_curso/{viaje_id}/")
+    
+    # GET REQUEST
+    if 'usuario_id' not in session:
+        return redirect('/')
+    data = {
+        'id': viaje_id
+    }
+    viaje = Ride.get_one_with_users(data)
+    return render_template("cancelar_viaje.html", viaje=viaje)
