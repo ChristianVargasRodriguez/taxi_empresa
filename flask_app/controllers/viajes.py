@@ -118,7 +118,7 @@ def todos_los_viajes():
         
         # Obtener la fecha actual
         fecha_actual = datetime.now()
-        
+        fecha_actual_form = datetime.today().strftime('%Y-%m-%d')
         # Obtener el inicio y fin del día actual
         inicio_dia_actual = fecha_actual.replace(hour=0, minute=0, second=0, microsecond=0)
         fin_dia_actual = fecha_actual.replace(hour=23, minute=59, second=59, microsecond=999999)
@@ -145,7 +145,7 @@ def todos_los_viajes():
             if inicio_dia_actual <= fecha_viaje <= fin_dia_actual:
                 viajes_del_dia.append(viaje)
 
-        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia)
+        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia, inicio_dia_actual=fecha_actual_form, fin_dia_actual=fecha_actual_form)
 
     if "conductor_id" in session:
         conductor_id = session.get("conductor_id")
@@ -203,7 +203,7 @@ def filtrar_viajes():
 
         # Configurar el idioma de destino en español Chile
         locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
-
+        
         viajes_filtrados = []
         Filtro_Solicitantes = []
 
@@ -250,7 +250,7 @@ def filtrar_viajes():
             fecha_fin_format = fecha_fin.strftime('%d/%m/%Y')
 
 
-        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados, fechaInicio=fecha_inicio_format, fechaFin=fecha_fin_format, Filtro_Solicitantes=Filtro_Solicitantes)
+        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados, fechaInicio=fecha_inicio_format, fechaFin=fecha_fin_format, Filtro_Solicitantes=Filtro_Solicitantes, inicio_dia_actual=fecha_inicio, fin_dia_actual=fecha_fin)
 
 
 
