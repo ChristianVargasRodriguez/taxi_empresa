@@ -230,10 +230,10 @@ def filtrar_viajes():
                     viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
                 else: 
                     viaje['valor_viaje'] = 0
-                
-                
+                fecha_inicio_format = fecha_inicio.strftime('%d/%m/%Y')
+                fecha_fin_format = fecha_fin.strftime('%d/%m/%Y')
                 viajes_filtrados.append(viaje)
-        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados)
+        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados, fechaInicio=fecha_inicio_format, fechaFin=fecha_fin_format)
 
 
 

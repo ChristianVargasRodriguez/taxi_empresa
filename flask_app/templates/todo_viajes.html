@@ -20,58 +20,54 @@
         </div>
     </form>
     {% endif %}
-    <table class="table table-dark table-export" id="tableID" >
-        <thead>
-            <tr>
-                <th class="col-2">Solicitante</th>
-                <th class="col-2">Conductor</th>
-                <th class="col-2">Dirección Inicio</th>
-                <th class="col-2">Dirección Destino</th>
-                <th class="col-2">Detalles</th>
-                <th class="col-1">Valor Viaje</th>
-                <th class="col-1">{% if request.path == '/todos_los_viajes'%} Viajes de hoy {% else %} Viajes filtrados por fechas {% endif %}</th>
-            </tr>
-        </thead>
-        <tbody id="tablaViajes">
-            
+    <div>
+        <table class="table table-dark table-export" id="tableID" >
+            <thead>
+                <tr>
+                    <th class="col-1">Solicitante</th>
+                    <th class="col-1">Conductor</th>
+                    <th class="col-1">Dirección Inicio</th>
+                    <th class="col-1">Dirección Destino</th>
+                    <th class="col-1">{% if request.path == '/todos_los_viajes'%} Viajes de hoy {% else %} Viajes filtrados Desde: {{fechaInicio}} Hasta: {{fechaFin}}{% endif %}</th>
+                    <th class="col-1">Valor Viaje</th>
+                    <th class="col-1">Detalles</th>
+                </tr>
+            </thead>
 
-
-            {% if todo_viajes|length == 0 %}
-            <tr>
-                <td colspan="7">Aún no hay viajes en taxi realizados hoy.</td>
-            </tr>
-            {% else %}
-
-                {% for viaje in todo_viajes %}
-            <tr>
-                <td class="col-2">{{ viaje.solicitante }}</td>
-                <td class="col-2">{% if viaje.conductor_nombre == None %} Sin Conductor Desitgnado {% else %} {{ viaje.conductor_nombre }} {{ viaje.conductor_apellido }} {% endif %}</td>
-                <td class="col-2">{{ viaje.direccion_inicio }}</td>
-                <td class="col-2">{{ viaje.direccion_destino }}</td>
-                <td class="col-2">{{ viaje.detalles }}</td>
-                <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
-                <td class="col-1">{{ viaje.created_at }} </td>
-            </tr>
-                {% endfor %}
-            <tr>
-                <td class="col-2"></td>
-                <td class="col-2"></td>
-                <td class="col-2"></td>
-                <td class="col-2"></td>
-                <td class="col-2">Total:</td>
-                <td class="col-1" id="sumatoria"></td>
-                <td class="col-1"></td>
-            </tr>
-                
+            <tbody id="tablaViajes">
+                {% if todo_viajes|length == 0 %}
+                <tr>
+                    <td colspan="7">Aún no hay viajes en taxi realizados hoy.</td>
+                </tr>
+                {% else %}
+                    {% for viaje in todo_viajes %}
+                <tr>
+                    <td class="col-1">{{ viaje.solicitante }}</td>
+                    <td class="col-1">{% if viaje.conductor_nombre == None %} Sin Conductor Desitgnado {% else %} {{ viaje.conductor_nombre }} {{ viaje.conductor_apellido }} {% endif %}</td>
+                    <td class="col-1">{{ viaje.direccion_inicio }}</td>
+                    <td class="col-1">{{ viaje.direccion_destino }}</td>
+                    <td class="col-1">{{ viaje.created_at }} </td>
+                    <td class="col-1">{% if viaje.valor_viaje == None %} {{0}} {% else %} {{ viaje.valor_viaje }} {% endif %}</td>
+                    <td class="col-1">{{ viaje.detalles }}</td>
+                </tr>
+                    {% endfor %}
+                <tr>
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col-1">Total:</td>
+                    <td class="col-1" id="sumatoria"></td>
+                    <td class="col-1"></td>
+                </tr>
+                {% endif %}
+            </tbody>
+            {% if session.cargo == "administrador" %}
+            <button onclick="exportTableToExcel('tableID', 'tableID')">Descargar Excel</button>
             {% endif %}
-            
-        </tbody>
-        {% if session.cargo == "administrador" %}
-        <button onclick="exportTableToExcel('tableID', 'tableID')">Descargar Excel</button>
-        {% endif %}
-    </table>
+        </table>
+    </div>
 </div>
-
 <br> 
 <br> 
 <br> 
