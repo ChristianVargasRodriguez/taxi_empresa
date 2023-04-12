@@ -205,6 +205,8 @@ def filtrar_viajes():
         locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
 
         viajes_filtrados = []
+        Filtro_Solicitantes = []
+
         for viaje in todo_viajes:
             
             fecha_inicio_str = request.form['fecha_inicio']
@@ -218,22 +220,37 @@ def filtrar_viajes():
             # Obtener la fecha y hora del viaje
             fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
             fecha_viaje = datetime.strptime(fecha_str, '%Y-%m-%d %H:%M:%S')
+            
+            if viaje['solicitante'] not in Filtro_Solicitantes:
+                Filtro_Solicitantes.append(viaje['solicitante'])
 
-            # Comparar las fechas
-            if (fechaInicio <= fecha_viaje and fecha_viaje <= fechaFin):
-                
+            nom_solicitante = request.form['nom_solicitante']
+            # Comparar las fechas y solicitante
+            if (fechaInicio <= fecha_viaje and fecha_viaje <= fechaFin and nom_solicitante == "--Todos los Solicitantes--"):
                 fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
                 viaje["created_at"] = fecha_formateada
-                
                 
                 if viaje['valor_viaje'] is not None:
                     viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
                 else: 
                     viaje['valor_viaje'] = 0
-                fecha_inicio_format = fecha_inicio.strftime('%d/%m/%Y')
-                fecha_fin_format = fecha_fin.strftime('%d/%m/%Y')
                 viajes_filtrados.append(viaje)
-        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados, fechaInicio=fecha_inicio_format, fechaFin=fecha_fin_format)
+            
+            elif (fechaInicio <= fecha_viaje and fecha_viaje <= fechaFin and nom_solicitante == viaje['solicitante']):
+                fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
+                viaje["created_at"] = fecha_formateada
+                
+                if viaje['valor_viaje'] is not None:
+                    viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
+                else: 
+                    viaje['valor_viaje'] = 0
+                viajes_filtrados.append(viaje)
+                    
+            fecha_inicio_format = fecha_inicio.strftime('%d/%m/%Y')
+            fecha_fin_format = fecha_fin.strftime('%d/%m/%Y')
+
+
+        return render_template("todo_viajes.html", todo_viajes=viajes_filtrados, fechaInicio=fecha_inicio_format, fechaFin=fecha_fin_format, Filtro_Solicitantes=Filtro_Solicitantes)
 
 
 

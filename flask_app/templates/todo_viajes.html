@@ -7,14 +7,32 @@
     {% if session.cargo == "administrador" %}
     <form action="/filtrar_viajes" method="post" id="filtroForm">
         <div>
-            <label> Filtrar por fechas: </label>
+            
+            <div class="form-group">
+                <label for="cargo">Filtrar por:</label>
+            </div>
+            
+            <label> Rango de fechas: </label>
             <div>
-                <label for="fecha_inicio">Fecha de inicio:</label>
+                <label for="fecha_inicio">Desde:</label>
                 <input type="date" id="fecha_inicio" name="fecha_inicio">
 
-                <label for="fecha_fin">Fecha de fin:</label>
+                <label for="fecha_fin">Hasta:</label>
                 <input type="date" id="fecha_fin" name="fecha_fin">
+            </div>
 
+
+            <div class="form-group">
+                <label for="nom_solicitante">Nombre de Solicitante:</label>
+                <select id="nom_solicitante" name="nom_solicitante" class="form-control">
+                    <option value="--Todos los Solicitantes--">--Todos los Solicitantes--</option>
+                    {% for solicitante_ind in Filtro_Solicitantes %}
+                    <option value="{{solicitante_ind}}">{{solicitante_ind}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <button type="submit">Filtrar</button>
             </div>
         </div>
