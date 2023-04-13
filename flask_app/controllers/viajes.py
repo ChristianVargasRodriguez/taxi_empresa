@@ -127,7 +127,7 @@ def todos_los_viajes():
         locale.setlocale(locale.LC_ALL, 'es_CL.UTF-8')
 
         viajes_del_dia = []
-
+        Filtro_Solicitantes = []
         for viaje in todo_viajes:
             # Obtener la fecha del viaje
             fecha_str = viaje["created_at"].strftime('%Y-%m-%d %H:%M:%S')
@@ -135,6 +135,10 @@ def todos_los_viajes():
             
             fecha_formateada = fecha_viaje.strftime('%H:%M %d/%m/%Y')
             viaje["created_at"] = fecha_formateada
+            
+            if viaje['solicitante'] not in Filtro_Solicitantes:
+                Filtro_Solicitantes.append(viaje['solicitante'])
+            
             
             if viaje['valor_viaje'] is not None:
                 viaje['valor_viaje'] = locale.currency(viaje['valor_viaje'], grouping=True, symbol=False, international=False)
@@ -145,7 +149,7 @@ def todos_los_viajes():
             if inicio_dia_actual <= fecha_viaje <= fin_dia_actual:
                 viajes_del_dia.append(viaje)
 
-        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia, inicio_dia_actual=fecha_actual_form, fin_dia_actual=fecha_actual_form)
+        return render_template("todo_viajes.html", todo_viajes=viajes_del_dia, inicio_dia_actual=fecha_actual_form, fin_dia_actual=fecha_actual_form, Filtro_Solicitantes=Filtro_Solicitantes)
 
     if "conductor_id" in session:
         conductor_id = session.get("conductor_id")
